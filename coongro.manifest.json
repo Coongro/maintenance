@@ -311,7 +311,17 @@
                   ],
                   "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
                 },
-                "notes": { "type": "string", "description": "Notas" }
+                "notes": { "type": "string", "description": "Notas" },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha de finalización"
+                },
+                "cost": {
+                  "type": "string",
+                  "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                  "description": "Costo final"
+                }
               },
               "required": ["title", "priority", "building_id", "status"],
               "additionalProperties": false
@@ -481,7 +491,17 @@
                   ],
                   "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
                 },
-                "notes": { "type": "string", "description": "Notas" }
+                "notes": { "type": "string", "description": "Notas" },
+                "completed_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha de finalización"
+                },
+                "cost": {
+                  "type": "string",
+                  "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                  "description": "Costo final"
+                }
               },
               "additionalProperties": false
             }
