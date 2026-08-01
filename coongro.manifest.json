@@ -1,0 +1,228 @@
+{
+  "id": "maintenance",
+  "version": "0.1.1",
+  "apiVersion": "2.0",
+  "displayName": "Mantenimiento",
+  "assets": {
+    "styles": [
+      "./dist/assets/tailwind.css",
+      "./dist/assets/fontawesome/css/all.min.css"
+    ]
+  },
+  "contributes": {
+    "menus": [
+      {
+        "path": "Mantenimiento",
+        "order": 10,
+        "viewId": "maintenance.mantenimiento.open",
+        "icon": "Wrench"
+      }
+    ],
+    "views": [
+      {
+        "id": "maintenance.orden-de-trabajo.open",
+        "title": "Orden de trabajo",
+        "component": "./dist/views/orden-de-trabajo/index.js",
+        "export": "OrdenDeTrabajoView"
+      },
+      {
+        "id": "maintenance.mantenimiento.open",
+        "title": "Mantenimiento",
+        "component": "./dist/views/mantenimiento/index.js",
+        "export": "MantenimientoView"
+      }
+    ],
+    "repositories": [
+      {
+        "module": "./dist/repositories/work-order.repository.js",
+        "export": "WorkOrderRepository",
+        "prefix": "maintenance.workOrders"
+      }
+    ],
+    "copilotCapabilities": [
+      {
+        "id": "maintenance.workOrders.list",
+        "action": "maintenance.workOrders.list",
+        "generatedBy": "builder",
+        "title": "Listar Mantenimiento",
+        "description": "Obtiene Mantenimiento disponibles para el cliente actual.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            {
+              "key": "title",
+              "name": "title",
+              "label": "Trabajo",
+              "format": "text"
+            },
+            {
+              "key": "property",
+              "name": "property",
+              "label": "Propiedad",
+              "format": "text"
+            },
+            {
+              "key": "unit",
+              "name": "unit",
+              "label": "Unidad",
+              "format": "text"
+            },
+            {
+              "key": "priority",
+              "name": "priority",
+              "label": "Prioridad",
+              "format": "text",
+              "values": [
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
+              ]
+            },
+            {
+              "key": "category",
+              "name": "category",
+              "label": "Rubro",
+              "format": "text",
+              "values": [
+                { "value": "plomeria", "label": "Plomería" },
+                { "value": "electricidad", "label": "Electricidad" },
+                { "value": "gas", "label": "Gas" },
+                { "value": "pintura", "label": "Pintura" },
+                { "value": "cerrajeria", "label": "Cerrajería" },
+                { "value": "albanileria", "label": "Albañilería" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "key": "status",
+              "name": "status",
+              "label": "Estado",
+              "format": "text",
+              "values": [
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
+              ]
+            },
+            {
+              "key": "cost",
+              "name": "cost",
+              "label": "Costo",
+              "format": "money"
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        }
+      },
+      {
+        "id": "maintenance.workOrders.getById",
+        "action": "maintenance.workOrders.getById",
+        "generatedBy": "builder",
+        "title": "Consultar Orden de trabajo",
+        "description": "Obtiene un registro de Orden de trabajo por su ID.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid", "description": "ID" }
+          },
+          "required": ["id"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            {
+              "key": "title",
+              "name": "title",
+              "label": "Trabajo",
+              "format": "text"
+            },
+            {
+              "key": "property",
+              "name": "property",
+              "label": "Propiedad",
+              "format": "text"
+            },
+            {
+              "key": "unit",
+              "name": "unit",
+              "label": "Unidad",
+              "format": "text"
+            },
+            {
+              "key": "priority",
+              "name": "priority",
+              "label": "Prioridad",
+              "format": "text",
+              "values": [
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
+              ]
+            },
+            {
+              "key": "category",
+              "name": "category",
+              "label": "Rubro",
+              "format": "text",
+              "values": [
+                { "value": "plomeria", "label": "Plomería" },
+                { "value": "electricidad", "label": "Electricidad" },
+                { "value": "gas", "label": "Gas" },
+                { "value": "pintura", "label": "Pintura" },
+                { "value": "cerrajeria", "label": "Cerrajería" },
+                { "value": "albanileria", "label": "Albañilería" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "key": "status",
+              "name": "status",
+              "label": "Estado",
+              "format": "text",
+              "values": [
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
+              ]
+            },
+            {
+              "key": "cost",
+              "name": "cost",
+              "label": "Costo",
+              "format": "money"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      }
+    ]
+  },
+  "initView": null
+}

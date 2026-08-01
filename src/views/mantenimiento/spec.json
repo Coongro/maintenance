@@ -1,0 +1,285 @@
+{
+  "specVersion": 1,
+  "kind": "blank",
+  "title": "Mantenimiento",
+  "data": {
+    "repositoryPrefix": "maintenance.workOrders"
+  },
+  "blocks": [
+    {
+      "id": "ph",
+      "kind": "component",
+      "comp": "PageHeader",
+      "props": {
+        "kicker": "ALQUILERES",
+        "title": "Mantenimiento",
+        "subtitle": "Los arreglos pendientes y los que ya se resolvieron.",
+        "actionLabel": "Nueva orden",
+        "action": {
+          "id": "openForm",
+          "label": "Nueva orden",
+          "target": "maintenance.orden-de-trabajo.open"
+        }
+      }
+    },
+    {
+      "id": "tbl",
+      "kind": "component",
+      "comp": "DataTable",
+      "props": {
+        "view": "table",
+        "density": "compact",
+        "mobile": "cards",
+        "pageSize": "20",
+        "subtitle": "property",
+        "expandable": true,
+        "rowAction": {
+          "id": "openForm",
+          "label": "Editar",
+          "target": "maintenance.orden-de-trabajo.open"
+        },
+        "columns": [
+          {
+            "key": "title",
+            "label": "Trabajo"
+          },
+          {
+            "key": "property",
+            "label": "Propiedad",
+            "emptyLabel": "—"
+          },
+          {
+            "key": "unit",
+            "label": "Unidad",
+            "emptyLabel": "Área común"
+          },
+          {
+            "key": "priority",
+            "label": "Prioridad",
+            "display": "pill",
+            "values": [
+              {
+                "value": "urgente",
+                "label": "Urgente",
+                "tone": "danger",
+                "icon": "TriangleAlert"
+              },
+              {
+                "value": "alta",
+                "label": "Alta",
+                "tone": "warning",
+                "icon": "ArrowUp"
+              },
+              {
+                "value": "normal",
+                "label": "Normal",
+                "tone": "outline",
+                "icon": "Minus"
+              },
+              {
+                "value": "baja",
+                "label": "Baja",
+                "tone": "neutral",
+                "icon": "ArrowDown"
+              }
+            ]
+          },
+          {
+            "key": "category",
+            "label": "Rubro",
+            "display": "pill",
+            "tone": "outline",
+            "emptyLabel": "—",
+            "values": [
+              {
+                "value": "plomeria",
+                "label": "Plomería",
+                "icon": "Droplet"
+              },
+              {
+                "value": "electricidad",
+                "label": "Electricidad",
+                "icon": "Zap"
+              },
+              {
+                "value": "gas",
+                "label": "Gas",
+                "icon": "Flame"
+              },
+              {
+                "value": "pintura",
+                "label": "Pintura",
+                "icon": "Paintbrush"
+              },
+              {
+                "value": "cerrajeria",
+                "label": "Cerrajería",
+                "icon": "KeyRound"
+              },
+              {
+                "value": "albanileria",
+                "label": "Albañilería",
+                "icon": "Hammer"
+              },
+              {
+                "value": "otro",
+                "label": "Otro",
+                "icon": "Wrench"
+              }
+            ]
+          },
+          {
+            "key": "status",
+            "label": "Estado",
+            "display": "pill",
+            "values": [
+              {
+                "value": "abierta",
+                "label": "Abierta",
+                "tone": "warning",
+                "icon": "CircleDot"
+              },
+              {
+                "value": "asignada",
+                "label": "Asignada",
+                "tone": "neutral",
+                "icon": "UserCheck"
+              },
+              {
+                "value": "en_curso",
+                "label": "En curso",
+                "tone": "neutral",
+                "icon": "Hammer"
+              },
+              {
+                "value": "terminada",
+                "label": "Terminada",
+                "tone": "success",
+                "icon": "CircleCheck"
+              },
+              {
+                "value": "cancelada",
+                "label": "Cancelada",
+                "tone": "outline",
+                "icon": "CircleSlash"
+              }
+            ]
+          },
+          {
+            "key": "cost",
+            "label": "Costo",
+            "display": "mono",
+            "format": "money",
+            "emptyLabel": "—"
+          },
+          {
+            "key": "reported_by",
+            "label": "Lo reportó",
+            "visible": false,
+            "emptyLabel": "—"
+          },
+          {
+            "key": "reported_at",
+            "label": "Fecha del reclamo",
+            "visible": false,
+            "format": "date"
+          },
+          {
+            "key": "scheduled_at",
+            "label": "Fecha prevista",
+            "visible": false,
+            "format": "date"
+          },
+          {
+            "key": "completed_at",
+            "label": "Se resolvió",
+            "visible": false,
+            "format": "date"
+          },
+          {
+            "key": "estimated_cost",
+            "label": "Presupuesto",
+            "visible": false,
+            "display": "mono",
+            "format": "money"
+          },
+          {
+            "key": "paid_by",
+            "label": "Lo paga",
+            "visible": false,
+            "values": [
+              {
+                "value": "propietario",
+                "label": "El propietario"
+              },
+              {
+                "value": "inquilino",
+                "label": "El inquilino"
+              },
+              {
+                "value": "consorcio",
+                "label": "El consorcio"
+              }
+            ]
+          },
+          {
+            "key": "description",
+            "label": "Detalle",
+            "visible": false
+          }
+        ],
+        "cells": [
+          [
+            "Pérdida en cocina",
+            "Belgrano 1240",
+            "3°B",
+            "urgente",
+            "plomeria",
+            "abierta",
+            "",
+            "Martina Ruiz",
+            "2026-07-28",
+            "",
+            "",
+            "85000",
+            "inquilino",
+            "Pierde la canilla de la bacha"
+          ],
+          [
+            "Pintura de palier",
+            "Belgrano 1240",
+            "",
+            "baja",
+            "pintura",
+            "asignada",
+            "",
+            "",
+            "2026-07-10",
+            "2026-08-15",
+            "",
+            "240000",
+            "consorcio",
+            ""
+          ]
+        ],
+        "filters": [
+          {
+            "column": "status",
+            "label": "Estado",
+            "kind": "select",
+            "options": []
+          },
+          {
+            "column": "priority",
+            "label": "Prioridad",
+            "kind": "select",
+            "options": []
+          }
+        ],
+        "actions": [],
+        "emptyTitle": "No hay órdenes de trabajo",
+        "emptySub": "Cargá la primera cuando algo necesite arreglo."
+      }
+    }
+  ]
+}

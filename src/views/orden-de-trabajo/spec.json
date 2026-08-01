@@ -1,0 +1,285 @@
+{
+  "specVersion": 1,
+  "kind": "form",
+  "title": "Orden de trabajo",
+  "data": {
+    "repositoryPrefix": "maintenance.workOrders"
+  },
+  "blocks": [
+    {
+      "id": "s1",
+      "kind": "container",
+      "ctype": "card",
+      "label": "El trabajo",
+      "icon": "Wrench",
+      "children": [
+        {
+          "id": "f_title",
+          "kind": "field",
+          "name": "title",
+          "fieldType": "text",
+          "label": "Título",
+          "validations": [
+            "required"
+          ],
+          "placeholder": "Ej: pérdida en la cocina"
+        },
+        {
+          "id": "f_desc",
+          "kind": "field",
+          "name": "description",
+          "fieldType": "text",
+          "label": "Descripción",
+          "validations": [],
+          "placeholder": "Ej: pierde la canilla de la bacha, moja el mueble de abajo"
+        },
+        {
+          "id": "f_priority",
+          "kind": "field",
+          "name": "priority",
+          "fieldType": "enum",
+          "label": "Prioridad",
+          "width": "half",
+          "validations": [
+            "required"
+          ],
+          "options": [
+            {
+              "value": "urgente",
+              "label": "Urgente",
+              "icon": "TriangleAlert"
+            },
+            {
+              "value": "alta",
+              "label": "Alta",
+              "icon": "ArrowUp"
+            },
+            {
+              "value": "normal",
+              "label": "Normal",
+              "icon": "Minus"
+            },
+            {
+              "value": "baja",
+              "label": "Baja",
+              "icon": "ArrowDown"
+            }
+          ]
+        },
+        {
+          "id": "f_category",
+          "kind": "field",
+          "name": "category",
+          "fieldType": "enum",
+          "label": "Rubro",
+          "width": "half",
+          "validations": [],
+          "options": [
+            {
+              "value": "plomeria",
+              "label": "Plomería",
+              "icon": "Droplet"
+            },
+            {
+              "value": "electricidad",
+              "label": "Electricidad",
+              "icon": "Zap"
+            },
+            {
+              "value": "gas",
+              "label": "Gas",
+              "icon": "Flame"
+            },
+            {
+              "value": "pintura",
+              "label": "Pintura",
+              "icon": "Paintbrush"
+            },
+            {
+              "value": "cerrajeria",
+              "label": "Cerrajería",
+              "icon": "KeyRound"
+            },
+            {
+              "value": "albanileria",
+              "label": "Albañilería",
+              "icon": "Hammer"
+            },
+            {
+              "value": "otro",
+              "label": "Otro",
+              "icon": "Wrench"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s2",
+      "kind": "container",
+      "ctype": "card",
+      "label": "Dónde",
+      "icon": "MapPin",
+      "children": [
+        {
+          "id": "f_building",
+          "kind": "field",
+          "name": "building_id",
+          "fieldType": "ref",
+          "label": "Propiedad",
+          "refEntity": "properties.buildings",
+          "width": "half",
+          "validations": [
+            "required"
+          ]
+        },
+        {
+          "id": "f_unit",
+          "kind": "field",
+          "name": "unit_id",
+          "fieldType": "ref",
+          "label": "Unidad",
+          "refEntity": "properties.units",
+          "width": "half",
+          "validations": []
+        },
+        {
+          "id": "f_reported_by",
+          "kind": "field",
+          "name": "reported_by_contact_id",
+          "fieldType": "ref",
+          "label": "Lo reportó",
+          "refEntity": "contacts",
+          "width": "half",
+          "validations": []
+        },
+        {
+          "id": "f_reported_at",
+          "kind": "field",
+          "name": "reported_at",
+          "fieldType": "date",
+          "label": "Fecha del reclamo",
+          "width": "half",
+          "validations": []
+        }
+      ]
+    },
+    {
+      "id": "s3",
+      "kind": "container",
+      "ctype": "card",
+      "label": "Quién lo hace",
+      "icon": "UserCheck",
+      "children": [
+        {
+          "id": "f_vendor",
+          "kind": "field",
+          "name": "vendor_contact_id",
+          "fieldType": "ref",
+          "label": "Proveedor",
+          "refEntity": "contacts",
+          "width": "half",
+          "validations": []
+        },
+        {
+          "id": "f_scheduled",
+          "kind": "field",
+          "name": "scheduled_at",
+          "fieldType": "date",
+          "label": "Fecha prevista",
+          "width": "half",
+          "validations": []
+        },
+        {
+          "id": "f_estimate",
+          "kind": "field",
+          "name": "estimated_cost",
+          "fieldType": "money",
+          "label": "Presupuesto estimado",
+          "width": "half",
+          "validations": [],
+          "placeholder": "Ej: 85000"
+        },
+        {
+          "id": "f_paid_by",
+          "kind": "field",
+          "name": "paid_by",
+          "fieldType": "enum",
+          "label": "Lo paga",
+          "width": "half",
+          "validations": [],
+          "options": [
+            {
+              "value": "propietario",
+              "label": "El propietario"
+            },
+            {
+              "value": "inquilino",
+              "label": "El inquilino"
+            },
+            {
+              "value": "consorcio",
+              "label": "El consorcio"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s4",
+      "kind": "container",
+      "ctype": "card",
+      "label": "Estado",
+      "icon": "Activity",
+      "children": [
+        {
+          "id": "f_status",
+          "kind": "field",
+          "name": "status",
+          "fieldType": "enum",
+          "label": "Estado",
+          "width": "half",
+          "validations": [
+            "required"
+          ],
+          "options": [
+            {
+              "value": "abierta",
+              "label": "Abierta",
+              "icon": "CircleDot"
+            },
+            {
+              "value": "asignada",
+              "label": "Asignada",
+              "icon": "UserCheck"
+            },
+            {
+              "value": "en_curso",
+              "label": "En curso",
+              "icon": "Hammer"
+            },
+            {
+              "value": "terminada",
+              "label": "Terminada",
+              "icon": "CircleCheck"
+            },
+            {
+              "value": "cancelada",
+              "label": "Cancelada",
+              "icon": "CircleSlash"
+            }
+          ]
+        },
+        {
+          "id": "f_notes",
+          "kind": "field",
+          "name": "notes",
+          "fieldType": "text",
+          "label": "Notas",
+          "validations": [],
+          "placeholder": "Ej: el encargado tiene la llave"
+        }
+      ]
+    }
+  ]
+}
