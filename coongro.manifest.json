@@ -221,6 +221,588 @@
           ],
           "identifierKey": "id"
         }
+      },
+      {
+        "id": "maintenance.workOrders.create",
+        "action": "maintenance.workOrders.create",
+        "generatedBy": "builder",
+        "title": "Crear Orden de trabajo",
+        "description": "Crea Orden de trabajo con los mismos campos disponibles en el formulario del cliente.",
+        "effect": "write",
+        "confirmation": "always",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "data": {
+              "type": "object",
+              "description": "Datos de Orden de trabajo a crear.",
+              "properties": {
+                "title": { "type": "string", "description": "Título" },
+                "description": {
+                  "type": "string",
+                  "description": "Descripción"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["urgente", "alta", "normal", "baja"],
+                  "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja)."
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "plomeria",
+                    "electricidad",
+                    "gas",
+                    "pintura",
+                    "cerrajeria",
+                    "albanileria",
+                    "otro"
+                  ],
+                  "description": "Rubro. Opciones: plomeria (Plomería), electricidad (Electricidad), gas (Gas), pintura (Pintura), cerrajeria (Cerrajería), albanileria (Albañilería), otro (Otro)."
+                },
+                "building_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Propiedad"
+                },
+                "unit_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Unidad"
+                },
+                "reported_by_contact_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Lo reportó"
+                },
+                "reported_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha del reclamo"
+                },
+                "vendor_contact_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Proveedor"
+                },
+                "scheduled_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha prevista"
+                },
+                "estimated_cost": {
+                  "type": "string",
+                  "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                  "description": "Presupuesto estimado"
+                },
+                "paid_by": {
+                  "type": "string",
+                  "enum": ["propietario", "inquilino", "consorcio"],
+                  "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio)."
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "abierta",
+                    "asignada",
+                    "en_curso",
+                    "terminada",
+                    "cancelada"
+                  ],
+                  "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
+                },
+                "notes": { "type": "string", "description": "Notas" }
+              },
+              "required": ["title", "priority", "building_id", "status"],
+              "additionalProperties": false
+            }
+          },
+          "required": ["data"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            {
+              "key": "title",
+              "name": "title",
+              "label": "Trabajo",
+              "format": "text"
+            },
+            {
+              "key": "property",
+              "name": "property",
+              "label": "Propiedad",
+              "format": "text"
+            },
+            {
+              "key": "unit",
+              "name": "unit",
+              "label": "Unidad",
+              "format": "text"
+            },
+            {
+              "key": "priority",
+              "name": "priority",
+              "label": "Prioridad",
+              "format": "text",
+              "values": [
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
+              ]
+            },
+            {
+              "key": "category",
+              "name": "category",
+              "label": "Rubro",
+              "format": "text",
+              "values": [
+                { "value": "plomeria", "label": "Plomería" },
+                { "value": "electricidad", "label": "Electricidad" },
+                { "value": "gas", "label": "Gas" },
+                { "value": "pintura", "label": "Pintura" },
+                { "value": "cerrajeria", "label": "Cerrajería" },
+                { "value": "albanileria", "label": "Albañilería" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "key": "status",
+              "name": "status",
+              "label": "Estado",
+              "format": "text",
+              "values": [
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
+              ]
+            },
+            {
+              "key": "cost",
+              "name": "cost",
+              "label": "Costo",
+              "format": "money"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      },
+      {
+        "id": "maintenance.workOrders.update",
+        "action": "maintenance.workOrders.update",
+        "generatedBy": "builder",
+        "title": "Actualizar Orden de trabajo",
+        "description": "Actualiza los campos editables de Orden de trabajo.",
+        "effect": "write",
+        "confirmation": "always",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid", "description": "ID" },
+            "data": {
+              "type": "object",
+              "description": "Campos de Orden de trabajo a modificar.",
+              "properties": {
+                "title": { "type": "string", "description": "Título" },
+                "description": {
+                  "type": "string",
+                  "description": "Descripción"
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["urgente", "alta", "normal", "baja"],
+                  "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja)."
+                },
+                "category": {
+                  "type": "string",
+                  "enum": [
+                    "plomeria",
+                    "electricidad",
+                    "gas",
+                    "pintura",
+                    "cerrajeria",
+                    "albanileria",
+                    "otro"
+                  ],
+                  "description": "Rubro. Opciones: plomeria (Plomería), electricidad (Electricidad), gas (Gas), pintura (Pintura), cerrajeria (Cerrajería), albanileria (Albañilería), otro (Otro)."
+                },
+                "building_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Propiedad"
+                },
+                "unit_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Unidad"
+                },
+                "reported_by_contact_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Lo reportó"
+                },
+                "reported_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha del reclamo"
+                },
+                "vendor_contact_id": {
+                  "type": "string",
+                  "format": "uuid",
+                  "description": "Proveedor"
+                },
+                "scheduled_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Fecha prevista"
+                },
+                "estimated_cost": {
+                  "type": "string",
+                  "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                  "description": "Presupuesto estimado"
+                },
+                "paid_by": {
+                  "type": "string",
+                  "enum": ["propietario", "inquilino", "consorcio"],
+                  "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio)."
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "abierta",
+                    "asignada",
+                    "en_curso",
+                    "terminada",
+                    "cancelada"
+                  ],
+                  "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
+                },
+                "notes": { "type": "string", "description": "Notas" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": ["id", "data"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            {
+              "key": "title",
+              "name": "title",
+              "label": "Trabajo",
+              "format": "text"
+            },
+            {
+              "key": "property",
+              "name": "property",
+              "label": "Propiedad",
+              "format": "text"
+            },
+            {
+              "key": "unit",
+              "name": "unit",
+              "label": "Unidad",
+              "format": "text"
+            },
+            {
+              "key": "priority",
+              "name": "priority",
+              "label": "Prioridad",
+              "format": "text",
+              "values": [
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
+              ]
+            },
+            {
+              "key": "category",
+              "name": "category",
+              "label": "Rubro",
+              "format": "text",
+              "values": [
+                { "value": "plomeria", "label": "Plomería" },
+                { "value": "electricidad", "label": "Electricidad" },
+                { "value": "gas", "label": "Gas" },
+                { "value": "pintura", "label": "Pintura" },
+                { "value": "cerrajeria", "label": "Cerrajería" },
+                { "value": "albanileria", "label": "Albañilería" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "key": "status",
+              "name": "status",
+              "label": "Estado",
+              "format": "text",
+              "values": [
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
+              ]
+            },
+            {
+              "key": "cost",
+              "name": "cost",
+              "label": "Costo",
+              "format": "money"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      },
+      {
+        "id": "maintenance.delegate.properties_buildings_list",
+        "action": "properties.buildings.list",
+        "generatedBy": "builder",
+        "title": "Listar Propiedad",
+        "description": "Obtiene Propiedad disponibles para el cliente actual.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Propiedad",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        }
+      },
+      {
+        "id": "maintenance.delegate.properties_buildings_getById",
+        "action": "properties.buildings.getById",
+        "generatedBy": "builder",
+        "title": "Consultar Propiedad",
+        "description": "Obtiene un registro de Propiedad por su ID.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid", "description": "ID" }
+          },
+          "required": ["id"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Propiedad",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      },
+      {
+        "id": "maintenance.delegate.properties_units_list",
+        "action": "properties.units.list",
+        "generatedBy": "builder",
+        "title": "Listar Unidad",
+        "description": "Obtiene Unidad disponibles para el cliente actual.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Unidad",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        }
+      },
+      {
+        "id": "maintenance.delegate.properties_units_getById",
+        "action": "properties.units.getById",
+        "generatedBy": "builder",
+        "title": "Consultar Unidad",
+        "description": "Obtiene un registro de Unidad por su ID.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid", "description": "ID" }
+          },
+          "required": ["id"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Unidad",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      },
+      {
+        "id": "maintenance.delegate.contacts_list",
+        "action": "contacts.list",
+        "generatedBy": "builder",
+        "title": "Listar Lo reportó",
+        "description": "Obtiene Lo reportó disponibles para el cliente actual.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Lo reportó",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        }
+      },
+      {
+        "id": "maintenance.delegate.contacts_getById",
+        "action": "contacts.getById",
+        "generatedBy": "builder",
+        "title": "Consultar Lo reportó",
+        "description": "Obtiene un registro de Lo reportó por su ID.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "string", "format": "uuid", "description": "ID" }
+          },
+          "required": ["id"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "record",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Lo reportó",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id"
+        }
+      },
+      {
+        "id": "maintenance.delegate.contacts_search",
+        "action": "contacts.search",
+        "generatedBy": "builder",
+        "title": "Buscar Lo reportó",
+        "description": "Busca Lo reportó por texto para el cliente actual.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": { "type": "string", "description": "Texto a buscar." },
+            "limit": {
+              "type": "integer",
+              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
+            }
+          },
+          "required": ["query"],
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            { "key": "id", "name": "id", "label": "ID", "format": "text" },
+            {
+              "key": "name",
+              "name": "name",
+              "label": "Lo reportó",
+              "format": "text"
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        }
       }
     ]
   },
