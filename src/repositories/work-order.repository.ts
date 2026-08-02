@@ -17,12 +17,39 @@ import { expenseForWorkOrder, workOrderRef } from '../services/work-order-settle
 /** Con qué nombre aparece en Caja el gasto de un arreglo. */
 const EXPENSE_SOURCE = 'mantenimiento';
 
+/** Con qué origen se le cobra al inquilino un arreglo que corrió por cuenta suya. */
+const TENANT_EXPENSE_SOURCE = 'gasto_a_cargo';
+
 /** Una orden con el inmueble, la unidad y quién la reportó resueltos. */
 export interface WorkOrderListRow extends WorkOrderRow {
   property: string | null;
   unit: string | null;
   reported_by: string | null;
   urgency: number;
+  /**
+   * Qué pasó con la plata de este arreglo: `a_pagar` (el egreso está registrado y el
+   * proveedor todavía espera), `pagado`, o vacío cuando no corresponde egreso.
+   */
+  expense_state: string;
+  /**
+   * Si el gasto ya entró en el recibo del inquilino: `cobrado` · `a_cobrar`. Vacío
+   * cuando el arreglo no está a cargo suyo, que es el caso normal.
+   */
+  tenant_state: string;
+}
+
+/** Lo que resume la cabecera de Mantenimiento. */
+export interface MaintenanceOverview {
+  /** Lo que sale del bolsillo del propietario y NO vuelve, en el año en curso. */
+  gastoPropio: number;
+  /** Cuántos arreglos lo componen: un promedio sin el conteo no dice nada. */
+  ordenes: number;
+  /** Lo que se le debe a proveedores: egresos registrados sin pago. */
+  aPagar: number;
+  aPagarOrdenes: number;
+  /** Lo adelantado por cuenta del inquilino, que se recupera en su recibo. */
+  aRecuperar: number;
+  aRecuperarOrdenes: number;
 }
 
 export class WorkOrderRepository {
@@ -36,7 +63,7 @@ export class WorkOrderRepository {
    * hace un mes.
    */
   async list(): Promise<WorkOrderListRow[]> {
-    return this.db.ormQuery((tx) =>
+    const filas = await this.db.ormQuery((tx) =>
       tx
         .select({
           ...getTableColumns(workOrderTable),
@@ -59,6 +86,95 @@ export class WorkOrderRepository {
           desc(workOrderTable.created_at)
         )
     );
+
+    // Qué pasó con la plata se resuelve acá y no en la pantalla: cerrar una orden
+    // ahora tiene dos consecuencias —el egreso al proveedor y, si es a cargo del
+    // inquilino, la línea en su recibo— y hasta que no se vieran desde la orden, la
+    // única forma de saber si ocurrieron era mirar la base.
+    const [egresos, cobrados] = await Promise.all([this.estadoDeEgresos(), this.refsCobradas()]);
+
+    return (filas ?? []).map((o) => ({
+      ...o,
+      expense_state: egresos.get(workOrderRef(String(o.id))) ?? '',
+      tenant_state:
+        String(o.paid_by ?? '') !== 'inquilino'
+          ? ''
+          : cobrados.has(workOrderRef(String(o.id)))
+            ? 'cobrado'
+            : 'a_cobrar',
+    })) as WorkOrderListRow[];
+  }
+
+  /**
+   * El resumen de arriba de Mantenimiento: cuánto cuesta mantener la cartera.
+   *
+   * Separa el gasto PROPIO del que se le recupera al inquilino porque son plata
+   * distinta: lo que se adelanta por cuenta de otro entra y sale, y sumarlo al gasto
+   * inflaría el número justo cuando sirve para decidir —a fin de año, si conviene
+   * deducir gastos reales o el presunto—. Ese número tiene que ser el que de verdad
+   * salió del bolsillo del propietario.
+   *
+   * El corte es el año en curso: la decisión que hay detrás es anual.
+   */
+  async overview({ year }: { year?: number } = {}): Promise<MaintenanceOverview> {
+    const desde = `${year ?? new Date().getFullYear()}-01-01`;
+    const hasta = `${year ?? new Date().getFullYear()}-12-31`;
+    const ordenes = await this.list();
+
+    const delAnio = ordenes.filter((o) => {
+      const fecha = String(o.completed_at ?? '');
+      return fecha >= desde && fecha <= hasta;
+    });
+
+    const monto = (o: WorkOrderListRow) => Number(o.cost ?? 0) || 0;
+    const conEgreso = delAnio.filter((o) => o.expense_state !== '');
+    const propios = conEgreso.filter((o) => String(o.paid_by ?? '') !== 'inquilino');
+    const recuperables = conEgreso.filter((o) => String(o.paid_by ?? '') === 'inquilino');
+    const aPagar = conEgreso.filter((o) => o.expense_state === 'a_pagar');
+
+    return {
+      gastoPropio: propios.reduce((acc, o) => acc + monto(o), 0),
+      ordenes: propios.length,
+      aPagar: aPagar.reduce((acc, o) => acc + monto(o), 0),
+      aPagarOrdenes: aPagar.length,
+      aRecuperar: recuperables.reduce((acc, o) => acc + monto(o), 0),
+      aRecuperarOrdenes: recuperables.length,
+    };
+  }
+
+  /** Por cada orden con egreso, si el proveedor ya cobró o todavía espera. */
+  private async estadoDeEgresos(): Promise<Map<string, string>> {
+    const cuentas = await this.db.ormQuery((tx) =>
+      tx
+        .select({
+          id: accountTable.id,
+          source_ref: accountTable.source_ref,
+          pagado: sql<number>`coalesce((
+            select sum(${paymentTable.amount}) from ${paymentTable}
+            where ${paymentTable.account_id} = ${accountTable.id}
+          ), 0)`,
+        })
+        .from(accountTable)
+        .where(eq(accountTable.source, EXPENSE_SOURCE))
+    );
+
+    return new Map(
+      (cuentas ?? []).map((c) => [
+        String(c.source_ref ?? ''),
+        Number(c.pagado ?? 0) > 0 ? 'pagado' : 'a_pagar',
+      ])
+    );
+  }
+
+  /** Las órdenes que ya figuran en el recibo de un inquilino. */
+  private async refsCobradas(): Promise<Set<string>> {
+    const lineas = await this.db.ormQuery((tx) =>
+      tx
+        .select({ source_ref: accountLineTable.source_ref })
+        .from(accountLineTable)
+        .where(eq(accountLineTable.source_type, TENANT_EXPENSE_SOURCE))
+    );
+    return new Set((lineas ?? []).map((l) => String(l.source_ref ?? '')).filter(Boolean));
   }
 
   async getById({ id }: { id: string }): Promise<WorkOrderRow | undefined> {

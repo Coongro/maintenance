@@ -96,21 +96,6 @@
               ]
             },
             {
-              "key": "category",
-              "name": "category",
-              "label": "Rubro",
-              "format": "text",
-              "values": [
-                { "value": "plomeria", "label": "Plomería" },
-                { "value": "electricidad", "label": "Electricidad" },
-                { "value": "gas", "label": "Gas" },
-                { "value": "pintura", "label": "Pintura" },
-                { "value": "cerrajeria", "label": "Cerrajería" },
-                { "value": "albanileria", "label": "Albañilería" },
-                { "value": "otro", "label": "Otro" }
-              ]
-            },
-            {
               "key": "status",
               "name": "status",
               "label": "Estado",
@@ -128,6 +113,26 @@
               "name": "cost",
               "label": "Costo",
               "format": "money"
+            },
+            {
+              "key": "expense_state",
+              "name": "expenseState",
+              "label": "Egreso",
+              "format": "text",
+              "values": [
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
+              ]
+            },
+            {
+              "key": "tenant_state",
+              "name": "tenantState",
+              "label": "Al inquilino",
+              "format": "text",
+              "values": [
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
+              ]
             }
           ],
           "identifierKey": "id",
@@ -185,21 +190,6 @@
               ]
             },
             {
-              "key": "category",
-              "name": "category",
-              "label": "Rubro",
-              "format": "text",
-              "values": [
-                { "value": "plomeria", "label": "Plomería" },
-                { "value": "electricidad", "label": "Electricidad" },
-                { "value": "gas", "label": "Gas" },
-                { "value": "pintura", "label": "Pintura" },
-                { "value": "cerrajeria", "label": "Cerrajería" },
-                { "value": "albanileria", "label": "Albañilería" },
-                { "value": "otro", "label": "Otro" }
-              ]
-            },
-            {
               "key": "status",
               "name": "status",
               "label": "Estado",
@@ -217,6 +207,26 @@
               "name": "cost",
               "label": "Costo",
               "format": "money"
+            },
+            {
+              "key": "expense_state",
+              "name": "expenseState",
+              "label": "Egreso",
+              "format": "text",
+              "values": [
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
+              ]
+            },
+            {
+              "key": "tenant_state",
+              "name": "tenantState",
+              "label": "Al inquilino",
+              "format": "text",
+              "values": [
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
+              ]
             }
           ],
           "identifierKey": "id"
@@ -364,21 +374,6 @@
               ]
             },
             {
-              "key": "category",
-              "name": "category",
-              "label": "Rubro",
-              "format": "text",
-              "values": [
-                { "value": "plomeria", "label": "Plomería" },
-                { "value": "electricidad", "label": "Electricidad" },
-                { "value": "gas", "label": "Gas" },
-                { "value": "pintura", "label": "Pintura" },
-                { "value": "cerrajeria", "label": "Cerrajería" },
-                { "value": "albanileria", "label": "Albañilería" },
-                { "value": "otro", "label": "Otro" }
-              ]
-            },
-            {
               "key": "status",
               "name": "status",
               "label": "Estado",
@@ -396,6 +391,26 @@
               "name": "cost",
               "label": "Costo",
               "format": "money"
+            },
+            {
+              "key": "expense_state",
+              "name": "expenseState",
+              "label": "Egreso",
+              "format": "text",
+              "values": [
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
+              ]
+            },
+            {
+              "key": "tenant_state",
+              "name": "tenantState",
+              "label": "Al inquilino",
+              "format": "text",
+              "values": [
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
+              ]
             }
           ],
           "identifierKey": "id"
@@ -543,21 +558,6 @@
               ]
             },
             {
-              "key": "category",
-              "name": "category",
-              "label": "Rubro",
-              "format": "text",
-              "values": [
-                { "value": "plomeria", "label": "Plomería" },
-                { "value": "electricidad", "label": "Electricidad" },
-                { "value": "gas", "label": "Gas" },
-                { "value": "pintura", "label": "Pintura" },
-                { "value": "cerrajeria", "label": "Cerrajería" },
-                { "value": "albanileria", "label": "Albañilería" },
-                { "value": "otro", "label": "Otro" }
-              ]
-            },
-            {
               "key": "status",
               "name": "status",
               "label": "Estado",
@@ -575,6 +575,26 @@
               "name": "cost",
               "label": "Costo",
               "format": "money"
+            },
+            {
+              "key": "expense_state",
+              "name": "expenseState",
+              "label": "Egreso",
+              "format": "text",
+              "values": [
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
+              ]
+            },
+            {
+              "key": "tenant_state",
+              "name": "tenantState",
+              "label": "Al inquilino",
+              "format": "text",
+              "values": [
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
+              ]
             }
           ],
           "identifierKey": "id"
@@ -823,6 +843,97 @@
           "defaultLimit": 20,
           "maxLimit": 50
         }
+      },
+      {
+        "id": "maintenance.workOrders.overview",
+        "action": "maintenance.workOrders.overview",
+        "title": "Mantenimiento",
+        "description": "Mantenimiento: capacidad declarada por el Builder.",
+        "effect": "read",
+        "confirmation": "never",
+        "inputSchema": {
+          "type": "object",
+          "properties": {},
+          "additionalProperties": false
+        },
+        "output": {
+          "kind": "collection",
+          "fields": [
+            {
+              "key": "title",
+              "name": "title",
+              "label": "Trabajo",
+              "format": "text"
+            },
+            {
+              "key": "property",
+              "name": "property",
+              "label": "Propiedad",
+              "format": "text"
+            },
+            {
+              "key": "unit",
+              "name": "unit",
+              "label": "Unidad",
+              "format": "text"
+            },
+            {
+              "key": "priority",
+              "name": "priority",
+              "label": "Prioridad",
+              "format": "text",
+              "values": [
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
+              ]
+            },
+            {
+              "key": "status",
+              "name": "status",
+              "label": "Estado",
+              "format": "text",
+              "values": [
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
+              ]
+            },
+            {
+              "key": "cost",
+              "name": "cost",
+              "label": "Costo",
+              "format": "money"
+            },
+            {
+              "key": "expense_state",
+              "name": "expenseState",
+              "label": "Egreso",
+              "format": "text",
+              "values": [
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
+              ]
+            },
+            {
+              "key": "tenant_state",
+              "name": "tenantState",
+              "label": "Al inquilino",
+              "format": "text",
+              "values": [
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
+              ]
+            }
+          ],
+          "identifierKey": "id",
+          "defaultLimit": 20,
+          "maxLimit": 50
+        },
+        "generatedBy": "builder"
       }
     ]
   },
