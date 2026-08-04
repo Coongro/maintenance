@@ -36,16 +36,24 @@
       {
         "module": "./dist/repositories/work-order.repository.js",
         "export": "WorkOrderRepository",
-        "prefix": "maintenance.workOrders"
+        "prefix": "maintenance.workOrders",
+        "actions": [
+          "list",
+          "overview",
+          "getById",
+          "create",
+          "update",
+          "delete",
+          "restore"
+        ]
       }
     ],
     "copilotCapabilities": [
       {
         "id": "maintenance.workOrders.list",
         "action": "maintenance.workOrders.list",
-        "generatedBy": "builder",
-        "title": "Listar Mantenimiento",
-        "description": "Obtiene Mantenimiento disponibles para el cliente actual.",
+        "title": "Listar arreglos",
+        "description": "Las órdenes de trabajo de la cartera, ordenadas por lo que hay que resolver primero: lo abierto arriba y dentro de eso por urgencia. Cada una trae la propiedad, la unidad, quién la reportó, el costo y qué pasó con la plata — si el proveedor ya cobró y si el gasto entró en el recibo del inquilino.",
         "effect": "read",
         "confirmation": "never",
         "inputSchema": {
@@ -138,20 +146,32 @@
           "identifierKey": "id",
           "defaultLimit": 20,
           "maxLimit": 50
+        },
+        "generatedBy": "agentic-graph",
+        "evidence": {
+          "level": 4,
+          "id": "ejecutado",
+          "floor": 3,
+          "authority": "module",
+          "coverage": "partial",
+          "validated": false
         }
       },
       {
         "id": "maintenance.workOrders.getById",
         "action": "maintenance.workOrders.getById",
-        "generatedBy": "builder",
-        "title": "Consultar Orden de trabajo",
-        "description": "Obtiene un registro de Orden de trabajo por su ID.",
+        "title": "Ver un arreglo",
+        "description": "Una orden de trabajo por su id: qué hay que arreglar, en qué propiedad y unidad, con qué prioridad, quién lo paga, en qué estado está y cuánto costó.",
         "effect": "read",
         "confirmation": "never",
         "inputSchema": {
           "type": "object",
           "properties": {
-            "id": { "type": "string", "format": "uuid", "description": "ID" }
+            "id": {
+              "type": "string",
+              "description": "El arreglo que se quiere ver.",
+              "ref": { "resource": "maintenance.workOrders" }
+            }
           },
           "required": ["id"],
           "additionalProperties": false
@@ -230,14 +250,22 @@
             }
           ],
           "identifierKey": "id"
+        },
+        "generatedBy": "agentic-graph",
+        "evidence": {
+          "level": 3,
+          "id": "cruzado",
+          "floor": 3,
+          "authority": "module",
+          "coverage": "partial",
+          "validated": false
         }
       },
       {
         "id": "maintenance.workOrders.create",
         "action": "maintenance.workOrders.create",
-        "generatedBy": "builder",
-        "title": "Crear Orden de trabajo",
-        "description": "Crea Orden de trabajo con los mismos campos disponibles en el formulario del cliente.",
+        "title": "Registrar un arreglo",
+        "description": "Abre una orden de trabajo sobre una propiedad o una unidad. ⚠️ Mueve plata: si se registra ya terminada y con costo, queda asentado el egreso al proveedor en Caja como deuda a pagar; y si el arreglo corre por cuenta del inquilino, entra en su recibo. «Lo paga» es lo que decide quién se hace cargo — no cambiarlo por defecto.",
         "effect": "write",
         "confirmation": "always",
         "inputSchema": {
@@ -273,37 +301,41 @@
                 "building_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Propiedad"
+                  "description": "La propiedad donde está el problema.",
+                  "ref": { "resource": "properties.buildings" }
                 },
                 "unit_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Unidad"
+                  "description": "La unidad puntual, si el arreglo es de una y no del edificio. Va junto con la propiedad a la que esa unidad pertenece.",
+                  "ref": { "resource": "properties.units" }
                 },
                 "reported_by_contact_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Lo reportó"
+                  "description": "Quién avisó del problema — normalmente el inquilino.",
+                  "ref": { "resource": "contacts" }
                 },
                 "reported_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha del reclamo"
+                  "description": "El día que avisaron."
                 },
                 "vendor_contact_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Proveedor"
+                  "description": "El proveedor que hace el trabajo. Es a quien se le va a deber el egreso cuando la orden se cierre con un costo.",
+                  "ref": { "resource": "contacts" }
                 },
                 "scheduled_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha prevista"
+                  "description": "Para cuándo está previsto."
                 },
                 "estimated_cost": {
                   "type": "string",
                   "pattern": "^-?\\d+(?:\\.\\d+)?$",
-                  "description": "Presupuesto estimado"
+                  "description": "Lo que se presupuestó. No mueve plata: la que cuenta es «Costo final»."
                 },
                 "paid_by": {
                   "type": "string",
@@ -325,12 +357,12 @@
                 "completed_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha de finalización"
+                  "description": "El día que quedó resuelto."
                 },
                 "cost": {
                   "type": "string",
                   "pattern": "^-?\\d+(?:\\.\\d+)?$",
-                  "description": "Costo final"
+                  "description": "Lo que salió de verdad. Este número es el que mueve la plata: con la orden terminada, se le debe al proveedor. Corregirlo corrige el egreso; vaciarlo lo da de baja, salvo que ya se le haya pagado."
                 }
               },
               "required": ["title", "priority", "building_id", "status"],
@@ -414,23 +446,35 @@
             }
           ],
           "identifierKey": "id"
+        },
+        "generatedBy": "agentic-graph",
+        "evidence": {
+          "level": 4,
+          "id": "ejecutado",
+          "floor": 4,
+          "authority": "module",
+          "coverage": "partial",
+          "validated": false
         }
       },
       {
         "id": "maintenance.workOrders.update",
         "action": "maintenance.workOrders.update",
-        "generatedBy": "builder",
-        "title": "Actualizar Orden de trabajo",
-        "description": "Actualiza los campos editables de Orden de trabajo.",
+        "title": "Actualizar un arreglo",
+        "description": "Cambia los datos de una orden de trabajo. ⚠️ Acá se cierra un arreglo: ponerle estado «terminada» junto con el costo final REGISTRA el egreso al proveedor en Caja —queda como deuda, no como pago— y, si corre por cuenta del inquilino, arma la línea de su recibo. Reabrirla o pasarla a «la paga el consorcio» da de baja ese egreso, salvo que ya se le haya pagado al proveedor: en ese caso no se toca y hay que resolverlo a mano.",
         "effect": "write",
         "confirmation": "always",
         "inputSchema": {
           "type": "object",
           "properties": {
-            "id": { "type": "string", "format": "uuid", "description": "ID" },
+            "id": {
+              "type": "string",
+              "description": "El arreglo a actualizar.",
+              "ref": { "resource": "maintenance.workOrders" }
+            },
             "data": {
               "type": "object",
-              "description": "Campos de Orden de trabajo a modificar.",
+              "description": "Los campos del arreglo que se quieren cambiar.",
               "properties": {
                 "title": { "type": "string", "description": "Título" },
                 "description": {
@@ -458,37 +502,41 @@
                 "building_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Propiedad"
+                  "description": "La propiedad donde está el problema.",
+                  "ref": { "resource": "properties.buildings" }
                 },
                 "unit_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Unidad"
+                  "description": "La unidad puntual, si el arreglo es de una y no del edificio. Va junto con la propiedad a la que esa unidad pertenece.",
+                  "ref": { "resource": "properties.units" }
                 },
                 "reported_by_contact_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Lo reportó"
+                  "description": "Quién avisó del problema — normalmente el inquilino.",
+                  "ref": { "resource": "contacts" }
                 },
                 "reported_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha del reclamo"
+                  "description": "El día que avisaron."
                 },
                 "vendor_contact_id": {
                   "type": "string",
                   "format": "uuid",
-                  "description": "Proveedor"
+                  "description": "El proveedor que hace el trabajo. Es a quien se le va a deber el egreso cuando la orden se cierre con un costo.",
+                  "ref": { "resource": "contacts" }
                 },
                 "scheduled_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha prevista"
+                  "description": "Para cuándo está previsto."
                 },
                 "estimated_cost": {
                   "type": "string",
                   "pattern": "^-?\\d+(?:\\.\\d+)?$",
-                  "description": "Presupuesto estimado"
+                  "description": "Lo que se presupuestó. No mueve plata: la que cuenta es «Costo final»."
                 },
                 "paid_by": {
                   "type": "string",
@@ -510,12 +558,12 @@
                 "completed_at": {
                   "type": "string",
                   "format": "date",
-                  "description": "Fecha de finalización"
+                  "description": "El día que quedó resuelto."
                 },
                 "cost": {
                   "type": "string",
                   "pattern": "^-?\\d+(?:\\.\\d+)?$",
-                  "description": "Costo final"
+                  "description": "Lo que salió de verdad. Este número es el que mueve la plata: con la orden terminada, se le debe al proveedor. Corregirlo corrige el egreso; vaciarlo lo da de baja, salvo que ya se le haya pagado."
                 }
               },
               "additionalProperties": false
@@ -598,344 +646,89 @@
             }
           ],
           "identifierKey": "id"
-        }
-      },
-      {
-        "id": "maintenance.delegate.properties_buildings_list",
-        "action": "properties.buildings.list",
-        "generatedBy": "builder",
-        "title": "Listar Propiedad",
-        "description": "Obtiene Propiedad disponibles para el cliente actual.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "limit": {
-              "type": "integer",
-              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
-            },
-            "offset": {
-              "type": "integer",
-              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
-            }
-          },
-          "additionalProperties": false
         },
-        "output": {
-          "kind": "collection",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Propiedad",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id",
-          "defaultLimit": 20,
-          "maxLimit": 50
-        }
-      },
-      {
-        "id": "maintenance.delegate.properties_buildings_getById",
-        "action": "properties.buildings.getById",
-        "generatedBy": "builder",
-        "title": "Consultar Propiedad",
-        "description": "Obtiene un registro de Propiedad por su ID.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "id": { "type": "string", "format": "uuid", "description": "ID" }
-          },
-          "required": ["id"],
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "record",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Propiedad",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id"
-        }
-      },
-      {
-        "id": "maintenance.delegate.properties_units_list",
-        "action": "properties.units.list",
-        "generatedBy": "builder",
-        "title": "Listar Unidad",
-        "description": "Obtiene Unidad disponibles para el cliente actual.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "limit": {
-              "type": "integer",
-              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
-            },
-            "offset": {
-              "type": "integer",
-              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
-            }
-          },
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "collection",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Unidad",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id",
-          "defaultLimit": 20,
-          "maxLimit": 50
-        }
-      },
-      {
-        "id": "maintenance.delegate.properties_units_getById",
-        "action": "properties.units.getById",
-        "generatedBy": "builder",
-        "title": "Consultar Unidad",
-        "description": "Obtiene un registro de Unidad por su ID.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "id": { "type": "string", "format": "uuid", "description": "ID" }
-          },
-          "required": ["id"],
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "record",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Unidad",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id"
-        }
-      },
-      {
-        "id": "maintenance.delegate.contacts_list",
-        "action": "contacts.list",
-        "generatedBy": "builder",
-        "title": "Listar Lo reportó",
-        "description": "Obtiene Lo reportó disponibles para el cliente actual.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "limit": {
-              "type": "integer",
-              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
-            },
-            "offset": {
-              "type": "integer",
-              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
-            }
-          },
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "collection",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Lo reportó",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id",
-          "defaultLimit": 20,
-          "maxLimit": 50
-        }
-      },
-      {
-        "id": "maintenance.delegate.contacts_getById",
-        "action": "contacts.getById",
-        "generatedBy": "builder",
-        "title": "Consultar Lo reportó",
-        "description": "Obtiene un registro de Lo reportó por su ID.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "id": { "type": "string", "format": "uuid", "description": "ID" }
-          },
-          "required": ["id"],
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "record",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Lo reportó",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id"
-        }
-      },
-      {
-        "id": "maintenance.delegate.contacts_search",
-        "action": "contacts.search",
-        "generatedBy": "builder",
-        "title": "Buscar Lo reportó",
-        "description": "Busca Lo reportó por texto para el cliente actual.",
-        "effect": "read",
-        "confirmation": "never",
-        "inputSchema": {
-          "type": "object",
-          "properties": {
-            "query": { "type": "string", "description": "Texto a buscar." },
-            "limit": {
-              "type": "integer",
-              "description": "Cantidad de resultados a devolver. Default 20; máximo 50."
-            },
-            "offset": {
-              "type": "integer",
-              "description": "Cantidad de resultados a saltear para pedir la página siguiente."
-            }
-          },
-          "required": ["query"],
-          "additionalProperties": false
-        },
-        "output": {
-          "kind": "collection",
-          "fields": [
-            { "key": "id", "name": "id", "label": "ID", "format": "text" },
-            {
-              "key": "name",
-              "name": "name",
-              "label": "Lo reportó",
-              "format": "text"
-            }
-          ],
-          "identifierKey": "id",
-          "defaultLimit": 20,
-          "maxLimit": 50
+        "generatedBy": "agentic-graph",
+        "evidence": {
+          "level": 4,
+          "id": "ejecutado",
+          "floor": 4,
+          "authority": "module",
+          "coverage": "partial",
+          "validated": false
         }
       },
       {
         "id": "maintenance.workOrders.overview",
         "action": "maintenance.workOrders.overview",
-        "title": "Mantenimiento",
-        "description": "Mantenimiento: capacidad declarada por el Builder.",
+        "title": "Cuánto cuesta mantener la cartera",
+        "description": "Los totales de mantenimiento de un año. Separa lo que sale del bolsillo del propietario y no vuelve, de lo que se adelanta por cuenta del inquilino y se recupera en su recibo: sumarlos daría un gasto inflado justo cuando el número sirve para decidir, a fin de año, si conviene deducir gastos reales o el presunto. Cuenta solo arreglos terminados que generaron egreso.",
         "effect": "read",
         "confirmation": "never",
         "inputSchema": {
           "type": "object",
-          "properties": {},
+          "properties": {
+            "year": {
+              "type": "integer",
+              "description": "El año a mirar. Si se omite, el año en curso."
+            }
+          },
           "additionalProperties": false
         },
         "output": {
-          "kind": "collection",
+          "kind": "record",
           "fields": [
             {
-              "key": "title",
-              "name": "title",
-              "label": "Trabajo",
-              "format": "text"
-            },
-            {
-              "key": "property",
-              "name": "property",
-              "label": "Propiedad",
-              "format": "text"
-            },
-            {
-              "key": "unit",
-              "name": "unit",
-              "label": "Unidad",
-              "format": "text"
-            },
-            {
-              "key": "priority",
-              "name": "priority",
-              "label": "Prioridad",
-              "format": "text",
-              "values": [
-                { "value": "urgente", "label": "Urgente" },
-                { "value": "alta", "label": "Alta" },
-                { "value": "normal", "label": "Normal" },
-                { "value": "baja", "label": "Baja" }
-              ]
-            },
-            {
-              "key": "status",
-              "name": "status",
-              "label": "Estado",
-              "format": "text",
-              "values": [
-                { "value": "abierta", "label": "Abierta" },
-                { "value": "asignada", "label": "Asignada" },
-                { "value": "en_curso", "label": "En curso" },
-                { "value": "terminada", "label": "Terminada" },
-                { "value": "cancelada", "label": "Cancelada" }
-              ]
-            },
-            {
-              "key": "cost",
-              "name": "cost",
-              "label": "Costo",
+              "key": "gastoPropio",
+              "name": "gastoPropio",
+              "label": "Gasto del propietario",
               "format": "money"
             },
             {
-              "key": "expense_state",
-              "name": "expenseState",
-              "label": "Egreso",
-              "format": "text",
-              "values": [
-                { "value": "a_pagar", "label": "A pagar" },
-                { "value": "pagado", "label": "Pagado" }
-              ]
+              "key": "ordenes",
+              "name": "ordenes",
+              "label": "Arreglos que lo componen",
+              "format": "number"
             },
             {
-              "key": "tenant_state",
-              "name": "tenantState",
-              "label": "Al inquilino",
-              "format": "text",
-              "values": [
-                { "value": "a_cobrar", "label": "Falta cargarlo" },
-                { "value": "cobrado", "label": "En su recibo" }
-              ]
+              "key": "aPagar",
+              "name": "aPagar",
+              "label": "Se le debe a proveedores",
+              "format": "money"
+            },
+            {
+              "key": "aPagarOrdenes",
+              "name": "aPagarOrdenes",
+              "label": "Arreglos impagos",
+              "format": "number"
+            },
+            {
+              "key": "aRecuperar",
+              "name": "aRecuperar",
+              "label": "A recuperar del inquilino",
+              "format": "money"
+            },
+            {
+              "key": "aRecuperarOrdenes",
+              "name": "aRecuperarOrdenes",
+              "label": "Arreglos a recuperar",
+              "format": "number"
             }
-          ],
-          "identifierKey": "id",
-          "defaultLimit": 20,
-          "maxLimit": 50
+          ]
         },
-        "generatedBy": "builder"
+        "generatedBy": "agentic-graph",
+        "evidence": {
+          "level": 3,
+          "id": "cruzado",
+          "floor": 3,
+          "authority": "module",
+          "coverage": "partial",
+          "validated": false
+        }
       }
-    ]
+    ],
+    "actionContracts": "./dist/agentic/contracts.js",
+    "copilotCatalogFingerprint": "040527319327fac4bfa281197737b9eb",
+    "copilotCatalogContentFingerprint": "a4a451050c7aab497c0b8584502f1bed"
   },
   "initView": null
 }
