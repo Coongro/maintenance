@@ -40,6 +40,8 @@ export function useOrdenDeTrabajoView() {
     paid_by: null,
     status: null,
     notes: null,
+    completed_at: null,
+    cost: null,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const setField = useCallback((k: string, v: any) => {
@@ -205,6 +207,8 @@ export function useOrdenDeTrabajoView() {
         paid_by: null,
         status: null,
         notes: null,
+        completed_at: null,
+        cost: null,
       });
       closeDialog();
     } catch (err) {

@@ -732,6 +732,106 @@ export function OrdenDeTrabajoView() {
             )
           )
         )
+      ),
+      h(
+        'div',
+        { 'data-cg-block-id': 's5', style: { display: 'contents' } },
+        h(
+          UI.FormSection,
+          { icon: 'CircleCheck', title: 'Cómo terminó' },
+          h(
+            'div',
+            {
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                alignItems: 'stretch',
+              },
+            },
+            h(
+              'div',
+              { style: { display: 'flex', gap: '14px', alignItems: 'flex-start' } },
+              h(
+                'div',
+                { 'data-cg-block-id': 'f_completed', style: { display: 'contents' } },
+                h(
+                  'div',
+                  { style: { flex: '1 1 260px', minWidth: 0 } },
+                  h(
+                    UI.Label,
+                    { htmlFor: 'completed_at', style: { display: 'block', marginBottom: '6px' } },
+                    'Fecha de finalización'
+                  ),
+                  h(UI.Input, {
+                    id: 'completed_at',
+                    type: 'date',
+                    value: String(values['completed_at'] ?? ''),
+                    onChange: (e: any) => setField('completed_at', e.target.value),
+                  }),
+                  errors['completed_at']
+                    ? h(
+                        'div',
+                        {
+                          style: { fontSize: '12px', color: 'var(--cg-danger)', marginTop: '4px' },
+                        },
+                        errors['completed_at']
+                      )
+                    : null
+                )
+              ),
+              h(
+                'div',
+                { 'data-cg-block-id': 'f_cost', style: { display: 'contents' } },
+                h(
+                  'div',
+                  { style: { flex: '1 1 260px', minWidth: 0 } },
+                  h(
+                    UI.Label,
+                    { htmlFor: 'cost', style: { display: 'block', marginBottom: '6px' } },
+                    'Costo final'
+                  ),
+                  h(
+                    'div',
+                    { style: { position: 'relative', display: 'flex', alignItems: 'center' } },
+                    h(
+                      'span',
+                      {
+                        style: {
+                          position: 'absolute',
+                          left: '11px',
+                          color: 'var(--cg-text-muted)',
+                          fontSize: '13px',
+                          pointerEvents: 'none',
+                        },
+                      },
+                      '$'
+                    ),
+                    h(UI.Input, {
+                      id: 'cost',
+                      type: 'number',
+                      inputMode: 'decimal',
+                      value: values['cost'] ?? '',
+                      placeholder: 'Ej: 92000',
+                      onChange: (e: any) =>
+                        setField('cost', e.target.value === '' ? null : Number(e.target.value)),
+                      style: { paddingLeft: '22px', textAlign: 'right' as const },
+                    })
+                  ),
+                  errors['cost']
+                    ? h(
+                        'div',
+                        {
+                          style: { fontSize: '12px', color: 'var(--cg-danger)', marginTop: '4px' },
+                        },
+                        errors['cost']
+                      )
+                    : null
+                )
+              )
+            )
+          )
+        )
       )
     ),
     h(

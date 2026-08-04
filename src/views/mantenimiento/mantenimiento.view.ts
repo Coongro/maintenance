@@ -35,6 +35,7 @@ export function MantenimientoView() {
     HIDDEN_COLUMNS,
     SUB_COL,
     ITEM_COLS,
+    metric,
   } = useMantenimientoView();
 
   const cellText = (row: any, c: any) => {
@@ -247,6 +248,18 @@ export function MantenimientoView() {
             value: filters['priority'] ?? '',
             onChange: (v: string) => setFilters((ff: any) => ({ ...ff, ['priority']: v })),
           },
+          {
+            label: 'Rubro',
+            options: [
+              { value: '', label: 'Todos' },
+              ...(filterOptions['category'] ?? []).map((o) => ({
+                value: o,
+                label: valueLabel('category', o),
+              })),
+            ],
+            value: filters['category'] ?? '',
+            onChange: (v: string) => setFilters((ff: any) => ({ ...ff, ['category']: v })),
+          },
         ].filter((s) => s.options.length > 1),
         sortKey: sort?.k ?? null,
         sortDirection: sort ? (sort.d > 0 ? 'asc' : 'desc') : null,
@@ -399,6 +412,275 @@ export function MantenimientoView() {
               'Nueva orden'
             ),
           })
+        )
+      ),
+      h(
+        'div',
+        { 'data-cg-block-id': 'row_kpi', style: { display: 'contents' } },
+        h(
+          'div',
+          {
+            style: {
+              display: 'grid',
+              gridTemplateColumns: isMobile
+                ? '1fr'
+                : 'minmax(0, 0.34fr) minmax(0, 0.33fr) minmax(0, 0.33fr)',
+              gap: '2%',
+              alignItems: 'stretch',
+            },
+          },
+          h(
+            'div',
+            {
+              style: {
+                minWidth: 0,
+                display: 'flex',
+                flexDirection: 'column' as const,
+                justifyContent: 'flex-start',
+                gap: '16px',
+              },
+            },
+            h(
+              'div',
+              { 'data-cg-block-id': 'k1', style: { display: 'contents' } },
+              h(
+                'div',
+                {
+                  style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxSizing: 'border-box',
+                    width: '100%',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    background: 'var(--cg-bg)',
+                    border: '1px solid var(--cg-border)',
+                    boxShadow: 'var(--cg-shadow-card, 0 1px 2px rgba(0,0,0,.05))',
+                  },
+                },
+                h(
+                  'div',
+                  { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                  h(
+                    'span',
+                    {
+                      style: {
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '8px',
+                        color: 'var(--cg-text-muted)',
+                        background: 'var(--cg-bg-secondary)',
+                        flexShrink: 0,
+                      },
+                    },
+                    h(UI.DynamicIcon, { icon: 'TrendingDown', size: 17 })
+                  ),
+                  h(
+                    'span',
+                    {
+                      style: {
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '.02em',
+                        textTransform: 'uppercase',
+                        color: 'var(--cg-text-muted)',
+                      },
+                    },
+                    'Gasto a tu cargo'
+                  )
+                ),
+                h(
+                  'div',
+                  {
+                    style: {
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      color: 'var(--cg-text)',
+                      marginTop: '8px',
+                    },
+                  },
+                  metric('k1', 'value', '$420.000')
+                ),
+                h(
+                  'div',
+                  { style: { fontSize: '12px', color: 'var(--cg-text-muted)', marginTop: '2px' } },
+                  metric('k1', 'sub', '1 arreglo en 2026')
+                )
+              )
+            )
+          ),
+          h(
+            'div',
+            {
+              style: {
+                minWidth: 0,
+                display: 'flex',
+                flexDirection: 'column' as const,
+                justifyContent: 'flex-start',
+                gap: '16px',
+              },
+            },
+            h(
+              'div',
+              { 'data-cg-block-id': 'k2', style: { display: 'contents' } },
+              h(
+                'div',
+                {
+                  style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxSizing: 'border-box',
+                    width: '100%',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    background: 'var(--cg-bg)',
+                    border: '1px solid var(--cg-border)',
+                    boxShadow: 'var(--cg-shadow-card, 0 1px 2px rgba(0,0,0,.05))',
+                  },
+                },
+                h(
+                  'div',
+                  { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                  h(
+                    'span',
+                    {
+                      style: {
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '8px',
+                        color: 'var(--cg-gold-deep)',
+                        background: 'var(--cg-gold-soft)',
+                        flexShrink: 0,
+                      },
+                    },
+                    h(UI.DynamicIcon, { icon: 'Clock', size: 17 })
+                  ),
+                  h(
+                    'span',
+                    {
+                      style: {
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '.02em',
+                        textTransform: 'uppercase',
+                        color: 'var(--cg-text-muted)',
+                      },
+                    },
+                    'Le debés al proveedor'
+                  )
+                ),
+                h(
+                  'div',
+                  {
+                    style: {
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      color: 'var(--cg-text)',
+                      marginTop: '8px',
+                    },
+                  },
+                  metric('k2', 'value', '$420.000')
+                ),
+                h(
+                  'div',
+                  { style: { fontSize: '12px', color: 'var(--cg-text-muted)', marginTop: '2px' } },
+                  metric('k2', 'sub', '1 egreso sin saldar')
+                )
+              )
+            )
+          ),
+          h(
+            'div',
+            {
+              style: {
+                minWidth: 0,
+                display: 'flex',
+                flexDirection: 'column' as const,
+                justifyContent: 'flex-start',
+                gap: '16px',
+              },
+            },
+            h(
+              'div',
+              { 'data-cg-block-id': 'k3', style: { display: 'contents' } },
+              h(
+                'div',
+                {
+                  style: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    boxSizing: 'border-box',
+                    width: '100%',
+                    padding: '16px',
+                    borderRadius: '12px',
+                    background: 'var(--cg-bg)',
+                    border: '1px solid var(--cg-border)',
+                    boxShadow: 'var(--cg-shadow-card, 0 1px 2px rgba(0,0,0,.05))',
+                  },
+                },
+                h(
+                  'div',
+                  { style: { display: 'flex', alignItems: 'center', gap: '10px' } },
+                  h(
+                    'span',
+                    {
+                      style: {
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '34px',
+                        height: '34px',
+                        borderRadius: '8px',
+                        color: 'var(--cg-green)',
+                        background: 'var(--cg-green-bg)',
+                        flexShrink: 0,
+                      },
+                    },
+                    h(UI.DynamicIcon, { icon: 'Undo2', size: 17 })
+                  ),
+                  h(
+                    'span',
+                    {
+                      style: {
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '.02em',
+                        textTransform: 'uppercase',
+                        color: 'var(--cg-text-muted)',
+                      },
+                    },
+                    'Recuperás del inquilino'
+                  )
+                ),
+                h(
+                  'div',
+                  {
+                    style: {
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      fontFamily: 'ui-monospace, SFMono-Regular, Menlo, monospace',
+                      color: 'var(--cg-text)',
+                      marginTop: '8px',
+                    },
+                  },
+                  metric('k3', 'value', '$95.000')
+                ),
+                h(
+                  'div',
+                  { style: { fontSize: '12px', color: 'var(--cg-text-muted)', marginTop: '2px' } },
+                  metric('k3', 'sub', 'adelantado por cuenta suya')
+                )
+              )
+            )
+          )
         )
       ),
       h('div', { 'data-cg-block-id': 'tbl', style: { display: 'contents' } }, renderTable())

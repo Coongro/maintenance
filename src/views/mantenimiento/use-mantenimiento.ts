@@ -4,7 +4,14 @@
  * ⚠️ ARCHIVO REGENERABLE: se reescribe al guardar el diseño en el Builder.
  * La lógica custom va en `handlers.ts` (nunca se pisa). Diseño: `spec.json`.
  */
-import { actions, events, getHostReact, usePlugin, views } from '@coongro/plugin-sdk';
+import {
+  actions,
+  events,
+  getHostReact,
+  usePlugin,
+  views,
+  type LiveValues,
+} from '@coongro/plugin-sdk';
 
 import { customHandlers } from './handlers.js';
 
@@ -25,6 +32,39 @@ export function useMantenimientoView() {
   // Registro con el que se abrió la vista (views.open(id, { record })): en una
   // ficha es por lo que filtran sus tablas hijas. Null en una lista suelta.
   const viewRecord = ((views.params as any)?.record ?? null) as Record<string, any> | null;
+  // Valores en vivo de los indicadores. Mientras cargan NO se muestra el número
+  // del diseño: sería una cifra inventada leída como real (por el usuario y por
+  // el Copilot). Sin loadLiveValues la vista es de maqueta y el texto escrito manda.
+  const [metrics, setMetrics] = useState<Record<string, LiveValues> | null>(null);
+  const reloadMetrics = useCallback(() => {
+    const load = customHandlers.loadLiveValues;
+    if (!load) return;
+    setMetrics(null);
+    void load({
+      execute: function exec<T = unknown>(id: string, args?: unknown): Promise<T> {
+        return actions.execute<T>(id, args);
+      },
+      record: viewRecord,
+    })
+      .then((m) => {
+        if (mounted.current) setMetrics(m ?? {});
+      })
+      .catch(() => {
+        if (mounted.current) setMetrics({});
+      });
+    // deps intencionalmente fijas: la función es estable
+  }, []);
+  useEffect(() => {
+    reloadMetrics();
+  }, [reloadMetrics]);
+  const metric = useCallback(
+    (id: string, key: keyof LiveValues, design: string) => {
+      if (!customHandlers.loadLiveValues) return design;
+      if (!metrics) return '…';
+      return metrics[id]?.[key] ?? design;
+    },
+    [metrics]
+  );
   const [rows, setRows] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -113,6 +153,42 @@ export function useMantenimientoView() {
       ],
     },
     {
+      key: 'status',
+      label: 'Estado',
+      display: 'pill',
+      values: [
+        { value: 'abierta', label: 'Abierta', tone: 'warning', icon: 'CircleDot' },
+        { value: 'asignada', label: 'Asignada', tone: 'neutral', icon: 'UserCheck' },
+        { value: 'en_curso', label: 'En curso', tone: 'neutral', icon: 'Hammer' },
+        { value: 'terminada', label: 'Terminada', tone: 'success', icon: 'CircleCheck' },
+        { value: 'cancelada', label: 'Cancelada', tone: 'outline', icon: 'CircleSlash' },
+      ],
+    },
+    { key: 'cost', label: 'Costo', display: 'mono', format: 'money', emptyLabel: '—' },
+    {
+      key: 'expense_state',
+      label: 'Egreso',
+      display: 'pill',
+      values: [
+        { value: 'a_pagar', label: 'A pagar', tone: 'warning', icon: 'Clock' },
+        { value: 'pagado', label: 'Pagado', tone: 'success', icon: 'CircleCheck' },
+      ],
+      emptyLabel: '—',
+    },
+    {
+      key: 'tenant_state',
+      label: 'Al inquilino',
+      display: 'pill',
+      values: [
+        { value: 'a_cobrar', label: 'Falta cargarlo', tone: 'warning', icon: 'Clock' },
+        { value: 'cobrado', label: 'En su recibo', tone: 'success', icon: 'CircleCheck' },
+      ],
+      emptyLabel: '—',
+    },
+  ];
+  // columnas OCULTAS: alimentan el detalle de la fila expandible
+  const HIDDEN_COLUMNS: typeof COLUMNS = [
+    {
       key: 'category',
       label: 'Rubro',
       display: 'pill',
@@ -128,22 +204,6 @@ export function useMantenimientoView() {
       tone: 'outline',
       emptyLabel: '—',
     },
-    {
-      key: 'status',
-      label: 'Estado',
-      display: 'pill',
-      values: [
-        { value: 'abierta', label: 'Abierta', tone: 'warning', icon: 'CircleDot' },
-        { value: 'asignada', label: 'Asignada', tone: 'neutral', icon: 'UserCheck' },
-        { value: 'en_curso', label: 'En curso', tone: 'neutral', icon: 'Hammer' },
-        { value: 'terminada', label: 'Terminada', tone: 'success', icon: 'CircleCheck' },
-        { value: 'cancelada', label: 'Cancelada', tone: 'outline', icon: 'CircleSlash' },
-      ],
-    },
-    { key: 'cost', label: 'Costo', display: 'mono', format: 'money', emptyLabel: '—' },
-  ];
-  // columnas OCULTAS: alimentan el detalle de la fila expandible
-  const HIDDEN_COLUMNS: typeof COLUMNS = [
     { key: 'reported_by', label: 'Lo reportó', emptyLabel: '—' },
     { key: 'reported_at', label: 'Fecha del reclamo', format: 'date' },
     { key: 'scheduled_at', label: 'Fecha prevista', format: 'date' },
@@ -283,6 +343,8 @@ export function useMantenimientoView() {
   }, [pendingDelete, load]);
 
   return {
+    metric,
+    reloadMetrics,
     sort,
     onSortChange,
     filters,
