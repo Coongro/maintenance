@@ -7,7 +7,10 @@
  * inferir los parámetros es un error, no un schema vacío.
  */
 
-import { defineAction, none } from '@coongro/plugin-sdk/agentic';
+// `none` no se importa: ninguna action de maintenance tiene input vacío. Estaba en el
+// import desde COONG-275 sin usarse, y el lint del plugin lo trata como ERROR — con eso
+// `npm run quality` fallaba y el pre-push quedaba bloqueado (COONG-294).
+import { defineAction } from '@coongro/plugin-sdk/agentic';
 
 export const listWorkOrders = defineAction({
   id: 'maintenance.workOrders.list',
