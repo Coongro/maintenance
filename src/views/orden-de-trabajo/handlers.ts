@@ -8,6 +8,10 @@
  */
 
 import type { CustomHandlers } from '@coongro/plugin-sdk';
+
 export const customHandlers: CustomHandlers = {
-  // onSubmit: async (values, { execute, toast }) => { ... },
+  // Cómo se lee cada unidad en el desplegable —«Belgrano 1240 · 1°A» con su detalle
+  // debajo— NO se decide acá: es diseño del campo y se elige en el Builder («Texto de
+  // cada opción» y «Subtítulo de cada opción»). Una orden cargada a la unidad equivocada
+  // manda al plomero a otra dirección; por eso el campo tiene que identificarla.
 };
