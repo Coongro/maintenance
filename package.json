@@ -1,6 +1,6 @@
 {
   "name": "@coongro/maintenance",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Órdenes de trabajo del inmueble: arreglos pedidos por el inquilino o detectados por el propietario, con su prioridad, a quién se asignó y cuánto costó. Deja registro de qué se reclamó y cuándo se resolvió.",
   "main": "dist/index.js",
