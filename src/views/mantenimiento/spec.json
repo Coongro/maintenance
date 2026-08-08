@@ -422,7 +422,13 @@
             "options": []
           }
         ],
-        "actions": [],
+        "actions": [
+          {
+            "label": "Eliminar",
+            "variant": "destructive",
+            "icon": "Trash2"
+          }
+        ],
         "emptyTitle": "No hay órdenes de trabajo",
         "emptySub": "Cargá la primera cuando algo necesite arreglo."
       }
