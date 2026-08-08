@@ -20,6 +20,11 @@ export function MantenimientoView() {
     loading,
     visibleRows,
     COLUMNS,
+    removeRow,
+    pendingDelete,
+    deleting,
+    confirmDelete,
+    cancelDelete,
     sort,
     onSortChange,
     cellValue,
@@ -187,6 +192,16 @@ export function MantenimientoView() {
   const valueLabel = (key: string, raw: string) =>
     (COLUMNS.find((c) => c.key === key)?.values ?? []).find((v: any) => v.value === raw)?.label ??
     raw;
+  const ROW_ACTIONS = [
+    {
+      label: 'Eliminar',
+      variant: 'destructive' as const,
+      icon: 'Trash2',
+      onClick: (row: any) => {
+        void removeRow(row);
+      },
+    },
+  ];
   const renderTable = () =>
     h(
       'div',
@@ -269,6 +284,7 @@ export function MantenimientoView() {
         onRowClick: (row: any) => {
           views.open('maintenance.orden-de-trabajo.open', { record: row }, { mode: 'dialog' });
         },
+        actions: ROW_ACTIONS,
         density: 'compact' as const,
         itemLabel: (row: any) => cellText(row, ITEM_COLS[0]),
         renderExpanded: (row: any) =>
@@ -350,6 +366,35 @@ export function MantenimientoView() {
                     },
                   },
                   renderCell(row, c)
+                )
+              )
+            ),
+            h(
+              'div',
+              {
+                style: {
+                  display: 'flex',
+                  gap: '4px',
+                  justifyContent: 'flex-end',
+                  borderTop: '1px solid var(--cg-border-light)',
+                  paddingTop: '8px',
+                  marginTop: '2px',
+                },
+              },
+              ...ROW_ACTIONS.filter((a2: any) => !a2.hidden?.(row)).map((a2: any) =>
+                h(
+                  UI.Button,
+                  {
+                    key: a2.label,
+                    size: 'sm' as const,
+                    variant:
+                      a2.variant === 'destructive' ? ('destructive' as const) : ('ghost' as const),
+                    onClick: (e: any) => {
+                      e.stopPropagation();
+                      a2.onClick(row);
+                    },
+                  },
+                  a2.label
                 )
               )
             )
@@ -684,6 +729,19 @@ export function MantenimientoView() {
         )
       ),
       h('div', { 'data-cg-block-id': 'tbl', style: { display: 'contents' } }, renderTable())
-    )
+    ),
+    h(UI.ConfirmDialog, {
+      open: !!pendingDelete,
+      onOpenChange: (o: boolean) => {
+        if (!o) cancelDelete();
+      },
+      title: 'Eliminar registro',
+      description: '¿Seguro que querés eliminar este registro? No se puede deshacer.',
+      confirmLabel: 'Eliminar',
+      loading: deleting,
+      onConfirm: () => {
+        void confirmDelete();
+      },
+    })
   );
 }
