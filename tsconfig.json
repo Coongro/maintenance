@@ -42,6 +42,12 @@
       ],
       "@coongro/properties/*": [
         "../properties/dist/*"
+      ],
+      "@coongro/billing": [
+        "../billing/dist/index.d.ts"
+      ],
+      "@coongro/billing/*": [
+        "../billing/dist/*"
       ]
     }
   },
