@@ -128,6 +128,8 @@
           "fieldType": "ref",
           "label": "Propiedad",
           "refEntity": "properties.buildings",
+          "refDisplay": "name",
+          "refSubtitle": "address",
           "width": "half",
           "validations": [
             "required"
@@ -140,8 +142,11 @@
           "fieldType": "ref",
           "label": "Unidad",
           "refEntity": "properties.units",
+          "refDisplay": "label",
+          "refSubtitle": "detail",
           "width": "half",
-          "validations": []
+          "validations": [],
+          "help": "Vacío = es un trabajo de las partes comunes, no de una unidad."
         },
         {
           "id": "f_reported_by",
@@ -280,6 +285,39 @@
           "placeholder": "Ej: el encargado tiene la llave"
         }
       ]
+    },
+    {
+      "id": "s5",
+      "kind": "container",
+      "ctype": "card",
+      "label": "Cómo terminó",
+      "icon": "CircleCheck",
+      "children": [
+        {
+          "id": "f_completed",
+          "kind": "field",
+          "name": "completed_at",
+          "fieldType": "date",
+          "label": "Fecha de finalización",
+          "width": "half",
+          "validations": [],
+          "help": "Se completa al pasar la orden a «Terminada»."
+        },
+        {
+          "id": "f_cost",
+          "kind": "field",
+          "name": "cost",
+          "fieldType": "money",
+          "label": "Costo final",
+          "width": "half",
+          "validations": [],
+          "placeholder": "Ej: 92000",
+          "help": "Lo que salió de verdad. Sin esto, el gasto de mantenimiento de la propiedad no existe como dato."
+        }
+      ]
     }
-  ]
+  ],
+  "headless": {
+    "handlers": []
+  }
 }

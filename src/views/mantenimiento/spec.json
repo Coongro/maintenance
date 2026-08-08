@@ -23,6 +23,65 @@
       }
     },
     {
+      "id": "row_kpi",
+      "kind": "container",
+      "ctype": "columns",
+      "alias": "Lo que cuesta mantener",
+      "cols": [
+        {
+          "fr": 0.34,
+          "children": [
+            {
+              "id": "k1",
+              "kind": "component",
+              "comp": "SummaryCard",
+              "props": {
+                "label": "Gasto a tu cargo",
+                "value": "$420.000",
+                "sub": "1 arreglo en 2026",
+                "icon": "TrendingDown",
+                "tone": "neutral"
+              }
+            }
+          ]
+        },
+        {
+          "fr": 0.33,
+          "children": [
+            {
+              "id": "k2",
+              "kind": "component",
+              "comp": "SummaryCard",
+              "props": {
+                "label": "Le debés al proveedor",
+                "value": "$420.000",
+                "sub": "1 egreso sin saldar",
+                "icon": "Clock",
+                "tone": "warning"
+              }
+            }
+          ]
+        },
+        {
+          "fr": 0.33,
+          "children": [
+            {
+              "id": "k3",
+              "kind": "component",
+              "comp": "SummaryCard",
+              "props": {
+                "label": "Recuperás del inquilino",
+                "value": "$95.000",
+                "sub": "adelantado por cuenta suya",
+                "icon": "Undo2",
+                "tone": "success"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "tbl",
       "kind": "component",
       "comp": "DataTable",
@@ -85,50 +144,6 @@
             ]
           },
           {
-            "key": "category",
-            "label": "Rubro",
-            "display": "pill",
-            "tone": "outline",
-            "emptyLabel": "—",
-            "values": [
-              {
-                "value": "plomeria",
-                "label": "Plomería",
-                "icon": "Droplet"
-              },
-              {
-                "value": "electricidad",
-                "label": "Electricidad",
-                "icon": "Zap"
-              },
-              {
-                "value": "gas",
-                "label": "Gas",
-                "icon": "Flame"
-              },
-              {
-                "value": "pintura",
-                "label": "Pintura",
-                "icon": "Paintbrush"
-              },
-              {
-                "value": "cerrajeria",
-                "label": "Cerrajería",
-                "icon": "KeyRound"
-              },
-              {
-                "value": "albanileria",
-                "label": "Albañilería",
-                "icon": "Hammer"
-              },
-              {
-                "value": "otro",
-                "label": "Otro",
-                "icon": "Wrench"
-              }
-            ]
-          },
-          {
             "key": "status",
             "label": "Estado",
             "display": "pill",
@@ -171,6 +186,91 @@
             "display": "mono",
             "format": "money",
             "emptyLabel": "—"
+          },
+          {
+            "key": "expense_state",
+            "label": "Egreso",
+            "display": "pill",
+            "emptyLabel": "—",
+            "values": [
+              {
+                "value": "a_pagar",
+                "label": "A pagar",
+                "tone": "warning",
+                "icon": "Clock"
+              },
+              {
+                "value": "pagado",
+                "label": "Pagado",
+                "tone": "success",
+                "icon": "CircleCheck"
+              }
+            ]
+          },
+          {
+            "key": "tenant_state",
+            "label": "Al inquilino",
+            "display": "pill",
+            "emptyLabel": "—",
+            "values": [
+              {
+                "value": "a_cobrar",
+                "label": "Falta cargarlo",
+                "tone": "warning",
+                "icon": "Clock"
+              },
+              {
+                "value": "cobrado",
+                "label": "En su recibo",
+                "tone": "success",
+                "icon": "CircleCheck"
+              }
+            ]
+          },
+          {
+            "key": "category",
+            "label": "Rubro",
+            "visible": false,
+            "display": "pill",
+            "tone": "outline",
+            "emptyLabel": "—",
+            "values": [
+              {
+                "value": "plomeria",
+                "label": "Plomería",
+                "icon": "Droplet"
+              },
+              {
+                "value": "electricidad",
+                "label": "Electricidad",
+                "icon": "Zap"
+              },
+              {
+                "value": "gas",
+                "label": "Gas",
+                "icon": "Flame"
+              },
+              {
+                "value": "pintura",
+                "label": "Pintura",
+                "icon": "Paintbrush"
+              },
+              {
+                "value": "cerrajeria",
+                "label": "Cerrajería",
+                "icon": "KeyRound"
+              },
+              {
+                "value": "albanileria",
+                "label": "Albañilería",
+                "icon": "Hammer"
+              },
+              {
+                "value": "otro",
+                "label": "Otro",
+                "icon": "Wrench"
+              }
+            ]
           },
           {
             "key": "reported_by",
@@ -234,9 +334,11 @@
             "Belgrano 1240",
             "3°B",
             "urgente",
-            "plomeria",
             "abierta",
             "",
+            "",
+            "",
+            "plomeria",
             "Martina Ruiz",
             "2026-07-28",
             "",
@@ -246,13 +348,51 @@
             "Pierde la canilla de la bacha"
           ],
           [
+            "Cambio de termotanque",
+            "Belgrano 1240",
+            "1°A",
+            "alta",
+            "terminada",
+            "420000",
+            "a_pagar",
+            "",
+            "gas",
+            "",
+            "2026-07-02",
+            "2026-07-05",
+            "2026-07-05",
+            "400000",
+            "propietario",
+            ""
+          ],
+          [
+            "Destapación de cañería",
+            "Belgrano 1240",
+            "1°B",
+            "normal",
+            "terminada",
+            "95000",
+            "pagado",
+            "cobrado",
+            "plomeria",
+            "Ana María Ruiz",
+            "2026-07-26",
+            "",
+            "2026-07-28",
+            "",
+            "inquilino",
+            ""
+          ],
+          [
             "Pintura de palier",
             "Belgrano 1240",
             "",
             "baja",
-            "pintura",
             "asignada",
             "",
+            "",
+            "",
+            "pintura",
             "",
             "2026-07-10",
             "2026-08-15",
@@ -274,12 +414,34 @@
             "label": "Prioridad",
             "kind": "select",
             "options": []
+          },
+          {
+            "column": "category",
+            "label": "Rubro",
+            "kind": "select",
+            "options": []
           }
         ],
-        "actions": [],
+        "actions": [
+          {
+            "label": "Eliminar",
+            "variant": "destructive",
+            "icon": "Trash2"
+          }
+        ],
         "emptyTitle": "No hay órdenes de trabajo",
         "emptySub": "Cargá la primera cuando algo necesite arreglo."
       }
     }
-  ]
+  ],
+  "headless": {
+    "handlers": [
+      {
+        "hook": "loadLiveValues",
+        "mode": "query",
+        "action": "maintenance.workOrders.overview",
+        "resource": "maintenance.workOrders"
+      }
+    ]
+  }
 }
