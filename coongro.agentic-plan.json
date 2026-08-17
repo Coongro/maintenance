@@ -1,0 +1,1894 @@
+{
+  "version": 1,
+  "pluginId": "maintenance",
+  "overrides": {
+    "cmd:maintenance.workOrders.create": {
+      "type": "agentic.command",
+      "fields": {
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Contrato derivado del formulario, degradado a borrador por COONG-293: describía lo que enviaba la pantalla, no lo que exige el handler. Revisalo con agentic_scaffold_contract.",
+          "proposal": {
+            "confirmation": "always",
+            "description": "Crea Orden de trabajo con los mismos campos disponibles en el formulario del cliente.",
+            "effect": "write",
+            "generatedBy": "builder",
+            "id": "maintenance.workOrders.create",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "data": {
+                  "additionalProperties": false,
+                  "description": "Datos de Orden de trabajo a crear.",
+                  "properties": {
+                    "building_id": {
+                      "description": "Propiedad",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "category": {
+                      "description": "Rubro. Opciones: plomeria (Plomería), electricidad (Electricidad), gas (Gas), pintura (Pintura), cerrajeria (Cerrajería), albanileria (Albañilería), otro (Otro).",
+                      "enum": [
+                        "plomeria",
+                        "electricidad",
+                        "gas",
+                        "pintura",
+                        "cerrajeria",
+                        "albanileria",
+                        "otro"
+                      ],
+                      "type": "string"
+                    },
+                    "completed_at": {
+                      "description": "Fecha de finalización",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "cost": {
+                      "description": "Costo final",
+                      "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                      "type": "string"
+                    },
+                    "description": {
+                      "description": "Descripción",
+                      "type": "string"
+                    },
+                    "estimated_cost": {
+                      "description": "Presupuesto estimado",
+                      "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                      "type": "string"
+                    },
+                    "notes": {
+                      "description": "Notas",
+                      "type": "string"
+                    },
+                    "paid_by": {
+                      "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio).",
+                      "enum": [
+                        "propietario",
+                        "inquilino",
+                        "consorcio"
+                      ],
+                      "type": "string"
+                    },
+                    "priority": {
+                      "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja).",
+                      "enum": [
+                        "urgente",
+                        "alta",
+                        "normal",
+                        "baja"
+                      ],
+                      "type": "string"
+                    },
+                    "reported_at": {
+                      "description": "Fecha del reclamo",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "reported_by_contact_id": {
+                      "description": "Lo reportó",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "scheduled_at": {
+                      "description": "Fecha prevista",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "status": {
+                      "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada).",
+                      "enum": [
+                        "abierta",
+                        "asignada",
+                        "en_curso",
+                        "terminada",
+                        "cancelada"
+                      ],
+                      "type": "string"
+                    },
+                    "title": {
+                      "description": "Título",
+                      "type": "string"
+                    },
+                    "unit_id": {
+                      "description": "Unidad",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "vendor_contact_id": {
+                      "description": "Proveedor",
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "title",
+                    "priority",
+                    "building_id",
+                    "status"
+                  ],
+                  "type": "object"
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "title",
+                  "label": "Trabajo",
+                  "name": "title"
+                },
+                {
+                  "format": "text",
+                  "key": "property",
+                  "label": "Propiedad",
+                  "name": "property"
+                },
+                {
+                  "format": "text",
+                  "key": "unit",
+                  "label": "Unidad",
+                  "name": "unit"
+                },
+                {
+                  "format": "text",
+                  "key": "priority",
+                  "label": "Prioridad",
+                  "name": "priority",
+                  "values": [
+                    {
+                      "label": "Urgente",
+                      "value": "urgente"
+                    },
+                    {
+                      "label": "Alta",
+                      "value": "alta"
+                    },
+                    {
+                      "label": "Normal",
+                      "value": "normal"
+                    },
+                    {
+                      "label": "Baja",
+                      "value": "baja"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "status",
+                  "label": "Estado",
+                  "name": "status",
+                  "values": [
+                    {
+                      "label": "Abierta",
+                      "value": "abierta"
+                    },
+                    {
+                      "label": "Asignada",
+                      "value": "asignada"
+                    },
+                    {
+                      "label": "En curso",
+                      "value": "en_curso"
+                    },
+                    {
+                      "label": "Terminada",
+                      "value": "terminada"
+                    },
+                    {
+                      "label": "Cancelada",
+                      "value": "cancelada"
+                    }
+                  ]
+                },
+                {
+                  "format": "money",
+                  "key": "cost",
+                  "label": "Costo",
+                  "name": "cost"
+                },
+                {
+                  "format": "text",
+                  "key": "expense_state",
+                  "label": "Egreso",
+                  "name": "expenseState",
+                  "values": [
+                    {
+                      "label": "A pagar",
+                      "value": "a_pagar"
+                    },
+                    {
+                      "label": "Pagado",
+                      "value": "pagado"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "tenant_state",
+                  "label": "Al inquilino",
+                  "name": "tenantState",
+                  "values": [
+                    {
+                      "label": "Falta cargarlo",
+                      "value": "a_cobrar"
+                    },
+                    {
+                      "label": "En su recibo",
+                      "value": "cobrado"
+                    }
+                  ]
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Crear Orden de trabajo"
+          },
+          "source": "formulario"
+        },
+        "scopeInvariants": [
+          {
+            "columns": [
+              "building_id",
+              "unit_id"
+            ],
+            "coverage": "input",
+            "note": "No es xor: todo arreglo pertenece a una propiedad, y el de una unidad puntual lleva las dos columnas. Por eso el input obliga building_id y deja unit_id opcional — es lo que hace la pantalla. Un arreglo con unit_id y sin building_id sería alcanzable en la base pero quedaría fuera de la lista por propiedad, que es como se mira el mantenimiento de la cartera.",
+            "rule": "requires"
+          }
+        ]
+      },
+      "prov": {
+        "contractDraft": "user",
+        "scopeInvariants": "user"
+      }
+    },
+    "cmd:maintenance.workOrders.update": {
+      "type": "agentic.command",
+      "fields": {
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Contrato derivado del formulario, degradado a borrador por COONG-293: describía lo que enviaba la pantalla, no lo que exige el handler. Revisalo con agentic_scaffold_contract.",
+          "proposal": {
+            "confirmation": "always",
+            "description": "Actualiza los campos editables de Orden de trabajo.",
+            "effect": "write",
+            "generatedBy": "builder",
+            "id": "maintenance.workOrders.update",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "data": {
+                  "additionalProperties": false,
+                  "description": "Campos de Orden de trabajo a modificar.",
+                  "properties": {
+                    "building_id": {
+                      "description": "Propiedad",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "category": {
+                      "description": "Rubro. Opciones: plomeria (Plomería), electricidad (Electricidad), gas (Gas), pintura (Pintura), cerrajeria (Cerrajería), albanileria (Albañilería), otro (Otro).",
+                      "enum": [
+                        "plomeria",
+                        "electricidad",
+                        "gas",
+                        "pintura",
+                        "cerrajeria",
+                        "albanileria",
+                        "otro"
+                      ],
+                      "type": "string"
+                    },
+                    "completed_at": {
+                      "description": "Fecha de finalización",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "cost": {
+                      "description": "Costo final",
+                      "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                      "type": "string"
+                    },
+                    "description": {
+                      "description": "Descripción",
+                      "type": "string"
+                    },
+                    "estimated_cost": {
+                      "description": "Presupuesto estimado",
+                      "pattern": "^-?\\d+(?:\\.\\d+)?$",
+                      "type": "string"
+                    },
+                    "notes": {
+                      "description": "Notas",
+                      "type": "string"
+                    },
+                    "paid_by": {
+                      "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio).",
+                      "enum": [
+                        "propietario",
+                        "inquilino",
+                        "consorcio"
+                      ],
+                      "type": "string"
+                    },
+                    "priority": {
+                      "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja).",
+                      "enum": [
+                        "urgente",
+                        "alta",
+                        "normal",
+                        "baja"
+                      ],
+                      "type": "string"
+                    },
+                    "reported_at": {
+                      "description": "Fecha del reclamo",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "reported_by_contact_id": {
+                      "description": "Lo reportó",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "scheduled_at": {
+                      "description": "Fecha prevista",
+                      "format": "date",
+                      "type": "string"
+                    },
+                    "status": {
+                      "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada).",
+                      "enum": [
+                        "abierta",
+                        "asignada",
+                        "en_curso",
+                        "terminada",
+                        "cancelada"
+                      ],
+                      "type": "string"
+                    },
+                    "title": {
+                      "description": "Título",
+                      "type": "string"
+                    },
+                    "unit_id": {
+                      "description": "Unidad",
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "vendor_contact_id": {
+                      "description": "Proveedor",
+                      "format": "uuid",
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                },
+                "id": {
+                  "description": "ID",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "data"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "title",
+                  "label": "Trabajo",
+                  "name": "title"
+                },
+                {
+                  "format": "text",
+                  "key": "property",
+                  "label": "Propiedad",
+                  "name": "property"
+                },
+                {
+                  "format": "text",
+                  "key": "unit",
+                  "label": "Unidad",
+                  "name": "unit"
+                },
+                {
+                  "format": "text",
+                  "key": "priority",
+                  "label": "Prioridad",
+                  "name": "priority",
+                  "values": [
+                    {
+                      "label": "Urgente",
+                      "value": "urgente"
+                    },
+                    {
+                      "label": "Alta",
+                      "value": "alta"
+                    },
+                    {
+                      "label": "Normal",
+                      "value": "normal"
+                    },
+                    {
+                      "label": "Baja",
+                      "value": "baja"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "status",
+                  "label": "Estado",
+                  "name": "status",
+                  "values": [
+                    {
+                      "label": "Abierta",
+                      "value": "abierta"
+                    },
+                    {
+                      "label": "Asignada",
+                      "value": "asignada"
+                    },
+                    {
+                      "label": "En curso",
+                      "value": "en_curso"
+                    },
+                    {
+                      "label": "Terminada",
+                      "value": "terminada"
+                    },
+                    {
+                      "label": "Cancelada",
+                      "value": "cancelada"
+                    }
+                  ]
+                },
+                {
+                  "format": "money",
+                  "key": "cost",
+                  "label": "Costo",
+                  "name": "cost"
+                },
+                {
+                  "format": "text",
+                  "key": "expense_state",
+                  "label": "Egreso",
+                  "name": "expenseState",
+                  "values": [
+                    {
+                      "label": "A pagar",
+                      "value": "a_pagar"
+                    },
+                    {
+                      "label": "Pagado",
+                      "value": "pagado"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "tenant_state",
+                  "label": "Al inquilino",
+                  "name": "tenantState",
+                  "values": [
+                    {
+                      "label": "Falta cargarlo",
+                      "value": "a_cobrar"
+                    },
+                    {
+                      "label": "En su recibo",
+                      "value": "cobrado"
+                    }
+                  ]
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Actualizar Orden de trabajo"
+          },
+          "source": "formulario"
+        }
+      },
+      "prov": {
+        "contractDraft": "user"
+      }
+    },
+    "q:maintenance.workOrders.getById": {
+      "type": "agentic.query",
+      "fields": {
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Contrato derivado del formulario, degradado a borrador por COONG-293: describía lo que enviaba la pantalla, no lo que exige el handler. Revisalo con agentic_scaffold_contract.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene un registro de Orden de trabajo por su ID.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "maintenance.workOrders.getById",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "description": "ID",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "title",
+                  "label": "Trabajo",
+                  "name": "title"
+                },
+                {
+                  "format": "text",
+                  "key": "property",
+                  "label": "Propiedad",
+                  "name": "property"
+                },
+                {
+                  "format": "text",
+                  "key": "unit",
+                  "label": "Unidad",
+                  "name": "unit"
+                },
+                {
+                  "format": "text",
+                  "key": "priority",
+                  "label": "Prioridad",
+                  "name": "priority",
+                  "values": [
+                    {
+                      "label": "Urgente",
+                      "value": "urgente"
+                    },
+                    {
+                      "label": "Alta",
+                      "value": "alta"
+                    },
+                    {
+                      "label": "Normal",
+                      "value": "normal"
+                    },
+                    {
+                      "label": "Baja",
+                      "value": "baja"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "status",
+                  "label": "Estado",
+                  "name": "status",
+                  "values": [
+                    {
+                      "label": "Abierta",
+                      "value": "abierta"
+                    },
+                    {
+                      "label": "Asignada",
+                      "value": "asignada"
+                    },
+                    {
+                      "label": "En curso",
+                      "value": "en_curso"
+                    },
+                    {
+                      "label": "Terminada",
+                      "value": "terminada"
+                    },
+                    {
+                      "label": "Cancelada",
+                      "value": "cancelada"
+                    }
+                  ]
+                },
+                {
+                  "format": "money",
+                  "key": "cost",
+                  "label": "Costo",
+                  "name": "cost"
+                },
+                {
+                  "format": "text",
+                  "key": "expense_state",
+                  "label": "Egreso",
+                  "name": "expenseState",
+                  "values": [
+                    {
+                      "label": "A pagar",
+                      "value": "a_pagar"
+                    },
+                    {
+                      "label": "Pagado",
+                      "value": "pagado"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "tenant_state",
+                  "label": "Al inquilino",
+                  "name": "tenantState",
+                  "values": [
+                    {
+                      "label": "Falta cargarlo",
+                      "value": "a_cobrar"
+                    },
+                    {
+                      "label": "En su recibo",
+                      "value": "cobrado"
+                    }
+                  ]
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Consultar Orden de trabajo"
+          },
+          "source": "formulario"
+        }
+      },
+      "prov": {
+        "contractDraft": "user"
+      }
+    },
+    "q:maintenance.workOrders.list": {
+      "type": "agentic.query",
+      "fields": {
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Contrato derivado del formulario, degradado a borrador por COONG-293: describía lo que enviaba la pantalla, no lo que exige el handler. Revisalo con agentic_scaffold_contract.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene Mantenimiento disponibles para el cliente actual.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "maintenance.workOrders.list",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "title",
+                  "label": "Trabajo",
+                  "name": "title"
+                },
+                {
+                  "format": "text",
+                  "key": "property",
+                  "label": "Propiedad",
+                  "name": "property"
+                },
+                {
+                  "format": "text",
+                  "key": "unit",
+                  "label": "Unidad",
+                  "name": "unit"
+                },
+                {
+                  "format": "text",
+                  "key": "priority",
+                  "label": "Prioridad",
+                  "name": "priority",
+                  "values": [
+                    {
+                      "label": "Urgente",
+                      "value": "urgente"
+                    },
+                    {
+                      "label": "Alta",
+                      "value": "alta"
+                    },
+                    {
+                      "label": "Normal",
+                      "value": "normal"
+                    },
+                    {
+                      "label": "Baja",
+                      "value": "baja"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "status",
+                  "label": "Estado",
+                  "name": "status",
+                  "values": [
+                    {
+                      "label": "Abierta",
+                      "value": "abierta"
+                    },
+                    {
+                      "label": "Asignada",
+                      "value": "asignada"
+                    },
+                    {
+                      "label": "En curso",
+                      "value": "en_curso"
+                    },
+                    {
+                      "label": "Terminada",
+                      "value": "terminada"
+                    },
+                    {
+                      "label": "Cancelada",
+                      "value": "cancelada"
+                    }
+                  ]
+                },
+                {
+                  "format": "money",
+                  "key": "cost",
+                  "label": "Costo",
+                  "name": "cost"
+                },
+                {
+                  "format": "text",
+                  "key": "expense_state",
+                  "label": "Egreso",
+                  "name": "expenseState",
+                  "values": [
+                    {
+                      "label": "A pagar",
+                      "value": "a_pagar"
+                    },
+                    {
+                      "label": "Pagado",
+                      "value": "pagado"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "tenant_state",
+                  "label": "Al inquilino",
+                  "name": "tenantState",
+                  "values": [
+                    {
+                      "label": "Falta cargarlo",
+                      "value": "a_cobrar"
+                    },
+                    {
+                      "label": "En su recibo",
+                      "value": "cobrado"
+                    }
+                  ]
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Listar Mantenimiento"
+          },
+          "source": "formulario"
+        }
+      },
+      "prov": {
+        "contractDraft": "user"
+      }
+    },
+    "q:maintenance.workOrders.overview": {
+      "type": "agentic.query",
+      "fields": {
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Contrato derivado del formulario, degradado a borrador por COONG-293: describía lo que enviaba la pantalla, no lo que exige el handler. Revisalo con agentic_scaffold_contract.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Mantenimiento: capacidad declarada por el Builder.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "maintenance.workOrders.overview",
+            "input": {
+              "none": true
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "title",
+                  "label": "Trabajo",
+                  "name": "title"
+                },
+                {
+                  "format": "text",
+                  "key": "property",
+                  "label": "Propiedad",
+                  "name": "property"
+                },
+                {
+                  "format": "text",
+                  "key": "unit",
+                  "label": "Unidad",
+                  "name": "unit"
+                },
+                {
+                  "format": "text",
+                  "key": "priority",
+                  "label": "Prioridad",
+                  "name": "priority",
+                  "values": [
+                    {
+                      "label": "Urgente",
+                      "value": "urgente"
+                    },
+                    {
+                      "label": "Alta",
+                      "value": "alta"
+                    },
+                    {
+                      "label": "Normal",
+                      "value": "normal"
+                    },
+                    {
+                      "label": "Baja",
+                      "value": "baja"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "status",
+                  "label": "Estado",
+                  "name": "status",
+                  "values": [
+                    {
+                      "label": "Abierta",
+                      "value": "abierta"
+                    },
+                    {
+                      "label": "Asignada",
+                      "value": "asignada"
+                    },
+                    {
+                      "label": "En curso",
+                      "value": "en_curso"
+                    },
+                    {
+                      "label": "Terminada",
+                      "value": "terminada"
+                    },
+                    {
+                      "label": "Cancelada",
+                      "value": "cancelada"
+                    }
+                  ]
+                },
+                {
+                  "format": "money",
+                  "key": "cost",
+                  "label": "Costo",
+                  "name": "cost"
+                },
+                {
+                  "format": "text",
+                  "key": "expense_state",
+                  "label": "Egreso",
+                  "name": "expenseState",
+                  "values": [
+                    {
+                      "label": "A pagar",
+                      "value": "a_pagar"
+                    },
+                    {
+                      "label": "Pagado",
+                      "value": "pagado"
+                    }
+                  ]
+                },
+                {
+                  "format": "text",
+                  "key": "tenant_state",
+                  "label": "Al inquilino",
+                  "name": "tenantState",
+                  "values": [
+                    {
+                      "label": "Falta cargarlo",
+                      "value": "a_cobrar"
+                    },
+                    {
+                      "label": "En su recibo",
+                      "value": "cobrado"
+                    }
+                  ]
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Mantenimiento"
+          },
+          "source": "formulario"
+        }
+      },
+      "prov": {
+        "contractDraft": "user"
+      }
+    }
+  },
+  "nodes": {
+    "cmd:maintenance.workOrders.delete": {
+      "type": "agentic.command",
+      "groupId": "ph-operacion",
+      "data": {
+        "actionId": "maintenance.workOrders.delete",
+        "argSchemas": {
+          "id": {
+            "description": "ID del registro.",
+            "ref": {
+              "resource": "maintenance.workOrders"
+            },
+            "type": "string"
+          }
+        },
+        "args": [
+          {
+            "description": "ID del registro.",
+            "label": "id",
+            "name": "id",
+            "required": true,
+            "resource": "maintenance.workOrders",
+            "type": "ref"
+          }
+        ],
+        "confirmation": "always",
+        "contract": {
+          "confirmation": "always",
+          "description": "Ejecuta maintenance.workOrders.delete.",
+          "effect": "destructive",
+          "generatedBy": "builder-high-confidence",
+          "id": "maintenance.workOrders.delete",
+          "input": {
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "description": "ID del registro.",
+                "ref": {
+                  "resource": "maintenance.workOrders"
+                },
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "tenantScope": "required",
+          "title": "Delete"
+        },
+        "contractAdoption": {
+          "confidence": "alta",
+          "kind": "automatic",
+          "source": "drizzle"
+        },
+        "contractAuthority": true,
+        "contractDraft": {
+          "confidence": "alta",
+          "input": {
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "description": "ID del registro.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "type": "object"
+          },
+          "source": "drizzle"
+        },
+        "description": "Ejecuta maintenance.workOrders.delete.",
+        "effect": "destructive",
+        "excluded": true,
+        "excludedReason": "Soft-delete de cuatro líneas que marca `deleted_at` sin pasar por `_syncExpense`. Cerrar una orden abre una cuenta a pagar en billing por el costo del arreglo; borrarla así deja esa deuda con el proveedor viva y sin nada que la explique, y si el arreglo era a cargo del inquilino, también la línea de su recibo. La orden desaparece de la lista y la plata se queda. Ninguna pantalla lo ejercita. Para dar de baja un arreglo que no se hizo, el camino es editarlo a «cancelada»: eso sí pasa por la sincronización y deshace el egreso.",
+        "idempotent": false,
+        "origin": "inferred",
+        "outputs": [],
+        "permissions": [],
+        "preconditions": [],
+        "requiredArgs": [
+          "id"
+        ],
+        "tenantScope": "required",
+        "title": "Delete",
+        "transactional": false
+      },
+      "prov": {
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "confirmation": "custom",
+        "contract": "user",
+        "contractAdoption": "user",
+        "contractAuthority": "generated",
+        "contractDraft": "user",
+        "description": "generated",
+        "effect": "custom",
+        "excluded": "user",
+        "excludedReason": "user",
+        "idempotent": "user",
+        "outputs": "custom",
+        "permissions": "user",
+        "preconditions": "user",
+        "requiredArgs": "custom",
+        "tenantScope": "custom",
+        "title": "generated",
+        "transactional": "user"
+      }
+    },
+    "cmd:maintenance.workOrders.restore": {
+      "type": "agentic.command",
+      "groupId": "ph-operacion",
+      "data": {
+        "actionId": "maintenance.workOrders.restore",
+        "argSchemas": {},
+        "args": [],
+        "confirmation": "always",
+        "contractDraft": {
+          "confidence": "no-inferible",
+          "source": "drizzle"
+        },
+        "effect": "write",
+        "excluded": true,
+        "excludedReason": "La vuelta de `delete`, con el mismo problema: revive la orden sin recalcular el egreso, así que puede quedar una orden terminada con costo y sin la cuenta que le corresponde. Sin pantalla que lo use y sin contraparte publicada que lo necesite.",
+        "idempotent": false,
+        "origin": "inferred",
+        "outputs": [],
+        "permissions": [],
+        "preconditions": [],
+        "tenantScope": "required",
+        "transactional": false
+      },
+      "prov": {
+        "actionId": "inferred",
+        "args": "inferred",
+        "excluded": "user",
+        "excludedReason": "user"
+      }
+    },
+    "q:contacts.getById": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "contacts.getById",
+        "argSchemas": {
+          "id": {
+            "description": "ID",
+            "format": "uuid",
+            "ref": {
+              "resource": "contacts"
+            },
+            "type": "string"
+          }
+        },
+        "args": [
+          {
+            "description": "ID",
+            "label": "id",
+            "name": "id",
+            "required": true,
+            "resource": "contacts",
+            "type": "ref"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene un registro de Lo reportó por su ID.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "contacts.getById",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "description": "ID",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Lo reportó",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Consultar Lo reportó"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene un registro de Lo reportó por su ID.",
+        "excluded": true,
+        "excludedReason": "Delegado hacia `contacts`: el dueño del recurso es quien debe publicarlo. Desde acá el cruce no puede verificar nada contra el schema.",
+        "origin": "generated",
+        "requiredArgs": [
+          "id"
+        ],
+        "resource": "contacts",
+        "title": "Consultar Lo reportó"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:contacts.list": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "contacts.list",
+        "argSchemas": {
+          "limit": {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "type": "integer"
+          }
+        },
+        "args": [
+          {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "label": "limit",
+            "name": "limit",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          },
+          {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "label": "offset",
+            "name": "offset",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene Lo reportó disponibles para el cliente actual.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "contacts.list",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Lo reportó",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Listar Lo reportó"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene Lo reportó disponibles para el cliente actual.",
+        "excluded": true,
+        "excludedReason": "Delegado hacia `contacts`, que es el dueño del recurso y quien tiene que publicarlo: desde maintenance el cruce no tiene contra qué medirlo («no hay schema de base contra el cual cruzar el contrato»), así que nunca alcanzaría el piso de evidencia de una lectura. ⚠️ Consecuencia registrada: hasta que `contacts` publique su catálogo, el agente no puede resolver por referencia quién reportó el arreglo ni qué proveedor lo hace — los dos campos siguen aceptando el id, pero no hay de dónde sacarlo. Adoptar `contacts` es la tarea que lo cierra.",
+        "origin": "generated",
+        "requiredArgs": [],
+        "resource": "contacts",
+        "title": "Listar Lo reportó"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:contacts.search": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "contacts.search",
+        "argSchemas": {
+          "limit": {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "type": "integer"
+          },
+          "query": {
+            "description": "Texto a buscar.",
+            "type": "string"
+          }
+        },
+        "args": [
+          {
+            "description": "Texto a buscar.",
+            "label": "query",
+            "name": "query",
+            "required": true,
+            "resource": null,
+            "type": "string"
+          },
+          {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "label": "limit",
+            "name": "limit",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          },
+          {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "label": "offset",
+            "name": "offset",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Busca Lo reportó por texto para el cliente actual.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "contacts.search",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+                  "type": "integer"
+                },
+                "query": {
+                  "description": "Texto a buscar.",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "query"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Lo reportó",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Buscar Lo reportó"
+          },
+          "source": "formulario"
+        },
+        "description": "Busca Lo reportó por texto para el cliente actual.",
+        "excluded": true,
+        "excludedReason": "Delegado hacia `contacts`: el dueño del recurso es quien debe publicarlo. Es además la búsqueda por nombre que el agente ciego pidió y no encontró, así que cuando `contacts` publique, esta es la que tiene que estar.",
+        "origin": "generated",
+        "requiredArgs": [
+          "query"
+        ],
+        "resource": "contacts",
+        "title": "Buscar Lo reportó"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:properties.buildings.getById": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "properties.buildings.getById",
+        "argSchemas": {
+          "id": {
+            "description": "ID",
+            "format": "uuid",
+            "ref": {
+              "resource": "properties.buildings"
+            },
+            "type": "string"
+          }
+        },
+        "args": [
+          {
+            "description": "ID",
+            "label": "id",
+            "name": "id",
+            "required": true,
+            "resource": "properties.buildings",
+            "type": "ref"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene un registro de Propiedad por su ID.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "properties.buildings.getById",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "description": "ID",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Propiedad",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Consultar Propiedad"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene un registro de Propiedad por su ID.",
+        "excluded": true,
+        "excludedReason": "Delegado de una action que properties ya publica con mejor copy. Dos caminos para lo mismo en la lista de herramientas del agente; se deja el del dueño del recurso.",
+        "origin": "generated",
+        "requiredArgs": [
+          "id"
+        ],
+        "resource": "properties.buildings",
+        "title": "Consultar Propiedad"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:properties.buildings.list": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "properties.buildings.list",
+        "argSchemas": {
+          "limit": {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "type": "integer"
+          }
+        },
+        "args": [
+          {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "label": "limit",
+            "name": "limit",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          },
+          {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "label": "offset",
+            "name": "offset",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene Propiedad disponibles para el cliente actual.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "properties.buildings.list",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Propiedad",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Listar Propiedad"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene Propiedad disponibles para el cliente actual.",
+        "excluded": true,
+        "excludedReason": "Delegado: ejecuta `properties.buildings.list`, que properties YA publica en su propio catálogo. En runtime los dos catálogos se suman en la misma lista de herramientas, así que el agente veía dos formas de listar propiedades y —medido con el agente ciego en las 5 tareas— elegía siempre esta, que arrastra el título y la descripción del generador viejo («Listar Propiedad», «Obtiene Propiedad disponibles para el cliente actual»). El trabajo de copy de properties no le llegaba al modelo. Se excluye para que quede un solo camino, y que sea el del dueño del recurso.",
+        "origin": "generated",
+        "requiredArgs": [],
+        "resource": "properties.buildings",
+        "title": "Listar Propiedad"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:properties.units.getById": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "properties.units.getById",
+        "argSchemas": {
+          "id": {
+            "description": "ID",
+            "format": "uuid",
+            "ref": {
+              "resource": "properties.units"
+            },
+            "type": "string"
+          }
+        },
+        "args": [
+          {
+            "description": "ID",
+            "label": "id",
+            "name": "id",
+            "required": true,
+            "resource": "properties.units",
+            "type": "ref"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene un registro de Unidad por su ID.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "properties.units.getById",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "id": {
+                  "description": "ID",
+                  "format": "uuid",
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id"
+              ],
+              "type": "object"
+            },
+            "output": {
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Unidad",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "record"
+            },
+            "tenantScope": "required",
+            "title": "Consultar Unidad"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene un registro de Unidad por su ID.",
+        "excluded": true,
+        "excludedReason": "Delegado de una action que properties ya publica con mejor copy. Se deja el del dueño del recurso.",
+        "origin": "generated",
+        "requiredArgs": [
+          "id"
+        ],
+        "resource": "properties.units",
+        "title": "Consultar Unidad"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "q:properties.units.list": {
+      "type": "agentic.query",
+      "groupId": "ph-consultas",
+      "data": {
+        "__stale": true,
+        "actionId": "properties.units.list",
+        "argSchemas": {
+          "limit": {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "type": "integer"
+          },
+          "offset": {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "type": "integer"
+          }
+        },
+        "args": [
+          {
+            "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+            "label": "limit",
+            "name": "limit",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          },
+          {
+            "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+            "label": "offset",
+            "name": "offset",
+            "required": false,
+            "resource": null,
+            "type": "integer"
+          }
+        ],
+        "contractDraft": {
+          "confidence": "media",
+          "nota": "Derivado del formulario: describe lo que la PANTALLA envía, no lo que el handler exige. Revisalo (agentic_scaffold_contract → defineAction) antes de publicarlo.",
+          "proposal": {
+            "confirmation": "never",
+            "description": "Obtiene Unidad disponibles para el cliente actual.",
+            "effect": "read",
+            "generatedBy": "builder",
+            "id": "properties.units.list",
+            "input": {
+              "additionalProperties": false,
+              "properties": {
+                "limit": {
+                  "description": "Cantidad de resultados a devolver. Default 20; máximo 50.",
+                  "type": "integer"
+                },
+                "offset": {
+                  "description": "Cantidad de resultados a saltear para pedir la página siguiente.",
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "output": {
+              "defaultLimit": 20,
+              "fields": [
+                {
+                  "format": "text",
+                  "key": "id",
+                  "label": "ID",
+                  "name": "id"
+                },
+                {
+                  "format": "text",
+                  "key": "name",
+                  "label": "Unidad",
+                  "name": "name"
+                }
+              ],
+              "identifierKey": "id",
+              "kind": "collection",
+              "maxLimit": 50
+            },
+            "tenantScope": "required",
+            "title": "Listar Unidad"
+          },
+          "source": "formulario"
+        },
+        "description": "Obtiene Unidad disponibles para el cliente actual.",
+        "excluded": true,
+        "excludedReason": "Delegado de una action que properties ya publica. Además properties expone «Unidades de una propiedad» (`units.listByBuilding`), que es lo que hace falta para elegir la unidad de un arreglo: listar TODAS las unidades de la cartera no acota nada.",
+        "origin": "generated",
+        "requiredArgs": [],
+        "resource": "properties.units",
+        "title": "Listar Unidad"
+      },
+      "prov": {
+        "__stale": "user",
+        "actionId": "generated",
+        "args": "custom",
+        "argSchemas": "custom",
+        "contractDraft": "generated",
+        "description": "generated",
+        "excluded": "user",
+        "excludedReason": "user",
+        "requiredArgs": "custom",
+        "resource": "generated",
+        "title": "generated"
+      }
+    },
+    "src:cmd:maintenance.workOrders.update:id": {
+      "type": "agentic.agent-input",
+      "groupId": "ph-entradas",
+      "data": {
+        "description": "ID",
+        "examples": [],
+        "name": "id",
+        "options": [],
+        "origin": "user",
+        "required": true,
+        "valueType": "string"
+      }
+    },
+    "src:q:maintenance.workOrders.getById:id": {
+      "type": "agentic.agent-input",
+      "groupId": "ph-entradas",
+      "data": {
+        "description": "ID",
+        "examples": [],
+        "name": "id",
+        "options": [],
+        "origin": "user",
+        "required": true,
+        "valueType": "string"
+      }
+    }
+  },
+  "edges": [
+    {
+      "id": "edge-1dc7pc3",
+      "sourceNodeId": "src:q:maintenance.workOrders.getById:id",
+      "sourcePortId": "value",
+      "targetNodeId": "q:maintenance.workOrders.getById",
+      "targetPortId": "arg-0",
+      "data": {
+        "origin": "user"
+      }
+    },
+    {
+      "id": "edge-2kllnp0",
+      "sourceNodeId": "src:cmd:maintenance.workOrders.update:id",
+      "sourcePortId": "value",
+      "targetNodeId": "cmd:maintenance.workOrders.update",
+      "targetPortId": "arg-0",
+      "data": {
+        "origin": "user"
+      }
+    }
+  ]
+}
