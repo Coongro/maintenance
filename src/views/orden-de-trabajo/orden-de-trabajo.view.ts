@@ -247,6 +247,15 @@ export function OrdenDeTrabajoView() {
                     h(
                       UI.SelectItem,
                       {
+                        key: 'ascensores',
+                        value: 'ascensores',
+                        icon: h(UI.DynamicIcon, { icon: 'ArrowUpDown', size: 16 }),
+                      },
+                      'Ascensores'
+                    ),
+                    h(
+                      UI.SelectItem,
+                      {
                         key: 'otro',
                         value: 'otro',
                         icon: h(UI.DynamicIcon, { icon: 'Wrench', size: 16 }),
