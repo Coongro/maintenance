@@ -199,6 +199,7 @@ export function useMantenimientoView() {
         { value: 'pintura', label: 'Pintura', icon: 'Paintbrush' },
         { value: 'cerrajeria', label: 'Cerrajería', icon: 'KeyRound' },
         { value: 'albanileria', label: 'Albañilería', icon: 'Hammer' },
+        { value: 'ascensores', label: 'Ascensores', icon: 'ArrowUpDown' },
         { value: 'otro', label: 'Otro', icon: 'Wrench' },
       ],
       tone: 'outline',
