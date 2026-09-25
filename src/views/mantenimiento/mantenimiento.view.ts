@@ -4,7 +4,7 @@
  * ⚠️ ARCHIVO REGENERABLE: se reescribe al guardar el diseño en el Builder.
  * La lógica custom va en `handlers.ts` (nunca se pisa). Diseño: `spec.json`.
  */
-import { getHostReact, getHostUI, useIsMobile, views } from '@coongro/plugin-sdk';
+import { getHostReact, getHostUI, useAccess, useIsMobile, views } from '@coongro/plugin-sdk';
 
 import { useMantenimientoView } from './use-mantenimiento.js';
 
@@ -15,6 +15,7 @@ const h = React.createElement;
 const UI = getHostUI() as any;
 
 export function MantenimientoView() {
+  const access = useAccess();
   const isMobile = useIsMobile();
   const {
     loading,
@@ -200,6 +201,7 @@ export function MantenimientoView() {
       onClick: (row: any) => {
         void removeRow(row);
       },
+      hidden: () => !access.canRun('maintenance.workOrders.delete'),
     },
   ];
   const renderTable = () =>
@@ -446,16 +448,20 @@ export function MantenimientoView() {
           h(UI.PageHeader, {
             title: 'Mantenimiento',
             subtitle: 'Los arreglos pendientes y los que ya se resolvieron.',
-            action: h(
-              UI.Button,
-              {
-                variant: 'default',
-                onClick: () => {
-                  views.open('maintenance.orden-de-trabajo.open', undefined, { mode: 'dialog' });
-                },
-              },
-              'Nueva orden'
-            ),
+            action: access.canOpen('maintenance.orden-de-trabajo.open')
+              ? h(
+                  UI.Button,
+                  {
+                    variant: 'default',
+                    onClick: () => {
+                      views.open('maintenance.orden-de-trabajo.open', undefined, {
+                        mode: 'dialog',
+                      });
+                    },
+                  },
+                  'Nueva orden'
+                )
+              : null,
           })
         )
       ),

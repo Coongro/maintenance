@@ -371,6 +371,17 @@ export function OrdenDeTrabajoView() {
                       )
                     )
                   ),
+                  h(
+                    'div',
+                    {
+                      style: {
+                        fontSize: '12px',
+                        color: 'var(--cg-text-tertiary)',
+                        marginTop: '4px',
+                      },
+                    },
+                    'Vacío = es un trabajo de las partes comunes, no de una unidad.'
+                  ),
                   errors['unit_id']
                     ? h(
                         'div',
@@ -794,6 +805,17 @@ export function OrdenDeTrabajoView() {
                     value: String(values['completed_at'] ?? ''),
                     onChange: (e: any) => setField('completed_at', e.target.value),
                   }),
+                  h(
+                    'div',
+                    {
+                      style: {
+                        fontSize: '12px',
+                        color: 'var(--cg-text-tertiary)',
+                        marginTop: '4px',
+                      },
+                    },
+                    'Se completa al pasar la orden a «Terminada».'
+                  ),
                   errors['completed_at']
                     ? h(
                         'div',
@@ -842,6 +864,17 @@ export function OrdenDeTrabajoView() {
                         setField('cost', e.target.value === '' ? null : Number(e.target.value)),
                       style: { paddingLeft: '22px', textAlign: 'right' as const },
                     })
+                  ),
+                  h(
+                    'div',
+                    {
+                      style: {
+                        fontSize: '12px',
+                        color: 'var(--cg-text-tertiary)',
+                        marginTop: '4px',
+                      },
+                    },
+                    'Lo que salió de verdad. Sin esto, el gasto de mantenimiento de la propiedad no existe como dato.'
                   ),
                   errors['cost']
                     ? h(
