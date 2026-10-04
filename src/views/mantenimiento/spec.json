@@ -266,6 +266,11 @@
                 "icon": "Hammer"
               },
               {
+                "value": "ascensores",
+                "label": "Ascensores",
+                "icon": "ArrowUpDown"
+              },
+              {
                 "value": "otro",
                 "label": "Otro",
                 "icon": "Wrench"
