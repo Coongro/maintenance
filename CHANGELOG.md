@@ -1,5 +1,25 @@
 # @coongro/maintenance
 
+## 0.3.0
+
+### Minor Changes
+
+- Las órdenes de trabajo declaran quién puede verlas y gestionarlas
+
+  El plugin declara sus permisos (`contributes.permissions`, generados con el Coongro Builder) y trae `src/permissions/permissions.gen.ts` con las constantes para chequearlos en código. En Coongro Standalone, cada usuario ve y hace solo lo que le permiten sus roles; el dueño, todo.
+
+  Las vistas del Builder se regeneraron: los botones que abren una pantalla o ejecutan una acción que el rol no permite ya no se muestran. Necesita un Core con `useAccess` en el plugin-sdk (Coongro/coongro-core#687).
+
+### Patch Changes
+
+- Una orden de ascensor ya tiene dónde clasificarse
+
+  Las categorías iban de plomería a albañilería y no incluían **ascensores**, que en un
+  edificio es de las que más órdenes genera: tiene conservador con visita mensual y
+  certificado obligatorio —de hecho el kit ya certifica ascensores desde Propiedades—.
+  Sin la categoría, esas órdenes caían en «otro» y dejaban de poder mirarse juntas; una
+  cargada como `ascensores` por fuera de la pantalla se mostraba con el nombre crudo.
+
 ## 0.2.0
 
 ### Minor Changes
@@ -12,7 +32,6 @@
 
   Ahora una orden terminada con costo genera su egreso, a nombre del proveedor y con la fecha del
   trabajo. Qué decide si corresponde es el campo **«Lo paga»**:
-
   - **El propietario** — le paga al proveedor. Egreso.
   - **El inquilino** — el propietario adelanta el pago y después se lo recupera en el recibo (eso lo
     hace `leases`). Egreso igual: la plata salió, aunque vuelva.
@@ -38,7 +57,6 @@
   cargarlo / en su recibo). Con eso, cerrar una orden deja de ser un acto a ciegas.
 
   Y arriba, tres números que responden cuánto cuesta mantener la cartera este año:
-
   - **Gasto a tu cargo** — lo que sale del bolsillo del propietario y no vuelve.
   - **Le debés al proveedor** — egresos registrados que todavía nadie pagó.
   - **Recuperás del inquilino** — lo adelantado por cuenta suya, que vuelve en su recibo.
