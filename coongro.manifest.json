@@ -1,6 +1,6 @@
 {
   "id": "maintenance",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "apiVersion": "2.0",
   "displayName": "Mantenimiento",
   "assets": {
@@ -97,22 +97,10 @@
               "label": "Prioridad",
               "format": "text",
               "values": [
-                {
-                  "value": "urgente",
-                  "label": "Urgente"
-                },
-                {
-                  "value": "alta",
-                  "label": "Alta"
-                },
-                {
-                  "value": "normal",
-                  "label": "Normal"
-                },
-                {
-                  "value": "baja",
-                  "label": "Baja"
-                }
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
               ]
             },
             {
@@ -121,26 +109,11 @@
               "label": "Estado",
               "format": "text",
               "values": [
-                {
-                  "value": "abierta",
-                  "label": "Abierta"
-                },
-                {
-                  "value": "asignada",
-                  "label": "Asignada"
-                },
-                {
-                  "value": "en_curso",
-                  "label": "En curso"
-                },
-                {
-                  "value": "terminada",
-                  "label": "Terminada"
-                },
-                {
-                  "value": "cancelada",
-                  "label": "Cancelada"
-                }
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
               ]
             },
             {
@@ -155,14 +128,8 @@
               "label": "Egreso",
               "format": "text",
               "values": [
-                {
-                  "value": "a_pagar",
-                  "label": "A pagar"
-                },
-                {
-                  "value": "pagado",
-                  "label": "Pagado"
-                }
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
               ]
             },
             {
@@ -171,14 +138,8 @@
               "label": "Al inquilino",
               "format": "text",
               "values": [
-                {
-                  "value": "a_cobrar",
-                  "label": "Falta cargarlo"
-                },
-                {
-                  "value": "cobrado",
-                  "label": "En su recibo"
-                }
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
               ]
             }
           ],
@@ -209,14 +170,10 @@
             "id": {
               "type": "string",
               "description": "El arreglo que se quiere ver.",
-              "ref": {
-                "resource": "maintenance.workOrders"
-              }
+              "ref": { "resource": "maintenance.workOrders" }
             }
           },
-          "required": [
-            "id"
-          ],
+          "required": ["id"],
           "additionalProperties": false
         },
         "output": {
@@ -246,22 +203,10 @@
               "label": "Prioridad",
               "format": "text",
               "values": [
-                {
-                  "value": "urgente",
-                  "label": "Urgente"
-                },
-                {
-                  "value": "alta",
-                  "label": "Alta"
-                },
-                {
-                  "value": "normal",
-                  "label": "Normal"
-                },
-                {
-                  "value": "baja",
-                  "label": "Baja"
-                }
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
               ]
             },
             {
@@ -270,26 +215,11 @@
               "label": "Estado",
               "format": "text",
               "values": [
-                {
-                  "value": "abierta",
-                  "label": "Abierta"
-                },
-                {
-                  "value": "asignada",
-                  "label": "Asignada"
-                },
-                {
-                  "value": "en_curso",
-                  "label": "En curso"
-                },
-                {
-                  "value": "terminada",
-                  "label": "Terminada"
-                },
-                {
-                  "value": "cancelada",
-                  "label": "Cancelada"
-                }
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
               ]
             },
             {
@@ -304,14 +234,8 @@
               "label": "Egreso",
               "format": "text",
               "values": [
-                {
-                  "value": "a_pagar",
-                  "label": "A pagar"
-                },
-                {
-                  "value": "pagado",
-                  "label": "Pagado"
-                }
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
               ]
             },
             {
@@ -320,14 +244,8 @@
               "label": "Al inquilino",
               "format": "text",
               "values": [
-                {
-                  "value": "a_cobrar",
-                  "label": "Falta cargarlo"
-                },
-                {
-                  "value": "cobrado",
-                  "label": "En su recibo"
-                }
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
               ]
             }
           ],
@@ -357,22 +275,14 @@
               "type": "object",
               "description": "Datos de Orden de trabajo a crear.",
               "properties": {
-                "title": {
-                  "type": "string",
-                  "description": "Título"
-                },
+                "title": { "type": "string", "description": "Título" },
                 "description": {
                   "type": "string",
                   "description": "Descripción"
                 },
                 "priority": {
                   "type": "string",
-                  "enum": [
-                    "urgente",
-                    "alta",
-                    "normal",
-                    "baja"
-                  ],
+                  "enum": ["urgente", "alta", "normal", "baja"],
                   "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja)."
                 },
                 "category": {
@@ -392,25 +302,19 @@
                   "type": "string",
                   "format": "uuid",
                   "description": "La propiedad donde está el problema.",
-                  "ref": {
-                    "resource": "properties.buildings"
-                  }
+                  "ref": { "resource": "properties.buildings" }
                 },
                 "unit_id": {
                   "type": "string",
                   "format": "uuid",
                   "description": "La unidad puntual, si el arreglo es de una y no del edificio. Va junto con la propiedad a la que esa unidad pertenece.",
-                  "ref": {
-                    "resource": "properties.units"
-                  }
+                  "ref": { "resource": "properties.units" }
                 },
                 "reported_by_contact_id": {
                   "type": "string",
                   "format": "uuid",
                   "description": "Quién avisó del problema — normalmente el inquilino.",
-                  "ref": {
-                    "resource": "contacts"
-                  }
+                  "ref": { "resource": "contacts" }
                 },
                 "reported_at": {
                   "type": "string",
@@ -421,9 +325,7 @@
                   "type": "string",
                   "format": "uuid",
                   "description": "El proveedor que hace el trabajo. Es a quien se le va a deber el egreso cuando la orden se cierre con un costo.",
-                  "ref": {
-                    "resource": "contacts"
-                  }
+                  "ref": { "resource": "contacts" }
                 },
                 "scheduled_at": {
                   "type": "string",
@@ -437,11 +339,7 @@
                 },
                 "paid_by": {
                   "type": "string",
-                  "enum": [
-                    "propietario",
-                    "inquilino",
-                    "consorcio"
-                  ],
+                  "enum": ["propietario", "inquilino", "consorcio"],
                   "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio)."
                 },
                 "status": {
@@ -455,10 +353,7 @@
                   ],
                   "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
                 },
-                "notes": {
-                  "type": "string",
-                  "description": "Notas"
-                },
+                "notes": { "type": "string", "description": "Notas" },
                 "completed_at": {
                   "type": "string",
                   "format": "date",
@@ -470,18 +365,11 @@
                   "description": "Lo que salió de verdad. Este número es el que mueve la plata: con la orden terminada, se le debe al proveedor. Corregirlo corrige el egreso; vaciarlo lo da de baja, salvo que ya se le haya pagado."
                 }
               },
-              "required": [
-                "title",
-                "priority",
-                "building_id",
-                "status"
-              ],
+              "required": ["title", "priority", "building_id", "status"],
               "additionalProperties": false
             }
           },
-          "required": [
-            "data"
-          ],
+          "required": ["data"],
           "additionalProperties": false
         },
         "output": {
@@ -511,22 +399,10 @@
               "label": "Prioridad",
               "format": "text",
               "values": [
-                {
-                  "value": "urgente",
-                  "label": "Urgente"
-                },
-                {
-                  "value": "alta",
-                  "label": "Alta"
-                },
-                {
-                  "value": "normal",
-                  "label": "Normal"
-                },
-                {
-                  "value": "baja",
-                  "label": "Baja"
-                }
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
               ]
             },
             {
@@ -535,26 +411,11 @@
               "label": "Estado",
               "format": "text",
               "values": [
-                {
-                  "value": "abierta",
-                  "label": "Abierta"
-                },
-                {
-                  "value": "asignada",
-                  "label": "Asignada"
-                },
-                {
-                  "value": "en_curso",
-                  "label": "En curso"
-                },
-                {
-                  "value": "terminada",
-                  "label": "Terminada"
-                },
-                {
-                  "value": "cancelada",
-                  "label": "Cancelada"
-                }
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
               ]
             },
             {
@@ -569,14 +430,8 @@
               "label": "Egreso",
               "format": "text",
               "values": [
-                {
-                  "value": "a_pagar",
-                  "label": "A pagar"
-                },
-                {
-                  "value": "pagado",
-                  "label": "Pagado"
-                }
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
               ]
             },
             {
@@ -585,14 +440,8 @@
               "label": "Al inquilino",
               "format": "text",
               "values": [
-                {
-                  "value": "a_cobrar",
-                  "label": "Falta cargarlo"
-                },
-                {
-                  "value": "cobrado",
-                  "label": "En su recibo"
-                }
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
               ]
             }
           ],
@@ -621,30 +470,20 @@
             "id": {
               "type": "string",
               "description": "El arreglo a actualizar.",
-              "ref": {
-                "resource": "maintenance.workOrders"
-              }
+              "ref": { "resource": "maintenance.workOrders" }
             },
             "data": {
               "type": "object",
               "description": "Los campos del arreglo que se quieren cambiar.",
               "properties": {
-                "title": {
-                  "type": "string",
-                  "description": "Título"
-                },
+                "title": { "type": "string", "description": "Título" },
                 "description": {
                   "type": "string",
                   "description": "Descripción"
                 },
                 "priority": {
                   "type": "string",
-                  "enum": [
-                    "urgente",
-                    "alta",
-                    "normal",
-                    "baja"
-                  ],
+                  "enum": ["urgente", "alta", "normal", "baja"],
                   "description": "Prioridad. Opciones: urgente (Urgente), alta (Alta), normal (Normal), baja (Baja)."
                 },
                 "category": {
@@ -664,25 +503,19 @@
                   "type": "string",
                   "format": "uuid",
                   "description": "La propiedad donde está el problema.",
-                  "ref": {
-                    "resource": "properties.buildings"
-                  }
+                  "ref": { "resource": "properties.buildings" }
                 },
                 "unit_id": {
                   "type": "string",
                   "format": "uuid",
                   "description": "La unidad puntual, si el arreglo es de una y no del edificio. Va junto con la propiedad a la que esa unidad pertenece.",
-                  "ref": {
-                    "resource": "properties.units"
-                  }
+                  "ref": { "resource": "properties.units" }
                 },
                 "reported_by_contact_id": {
                   "type": "string",
                   "format": "uuid",
                   "description": "Quién avisó del problema — normalmente el inquilino.",
-                  "ref": {
-                    "resource": "contacts"
-                  }
+                  "ref": { "resource": "contacts" }
                 },
                 "reported_at": {
                   "type": "string",
@@ -693,9 +526,7 @@
                   "type": "string",
                   "format": "uuid",
                   "description": "El proveedor que hace el trabajo. Es a quien se le va a deber el egreso cuando la orden se cierre con un costo.",
-                  "ref": {
-                    "resource": "contacts"
-                  }
+                  "ref": { "resource": "contacts" }
                 },
                 "scheduled_at": {
                   "type": "string",
@@ -709,11 +540,7 @@
                 },
                 "paid_by": {
                   "type": "string",
-                  "enum": [
-                    "propietario",
-                    "inquilino",
-                    "consorcio"
-                  ],
+                  "enum": ["propietario", "inquilino", "consorcio"],
                   "description": "Lo paga. Opciones: propietario (El propietario), inquilino (El inquilino), consorcio (El consorcio)."
                 },
                 "status": {
@@ -727,10 +554,7 @@
                   ],
                   "description": "Estado. Opciones: abierta (Abierta), asignada (Asignada), en_curso (En curso), terminada (Terminada), cancelada (Cancelada)."
                 },
-                "notes": {
-                  "type": "string",
-                  "description": "Notas"
-                },
+                "notes": { "type": "string", "description": "Notas" },
                 "completed_at": {
                   "type": "string",
                   "format": "date",
@@ -745,10 +569,7 @@
               "additionalProperties": false
             }
           },
-          "required": [
-            "id",
-            "data"
-          ],
+          "required": ["id", "data"],
           "additionalProperties": false
         },
         "output": {
@@ -778,22 +599,10 @@
               "label": "Prioridad",
               "format": "text",
               "values": [
-                {
-                  "value": "urgente",
-                  "label": "Urgente"
-                },
-                {
-                  "value": "alta",
-                  "label": "Alta"
-                },
-                {
-                  "value": "normal",
-                  "label": "Normal"
-                },
-                {
-                  "value": "baja",
-                  "label": "Baja"
-                }
+                { "value": "urgente", "label": "Urgente" },
+                { "value": "alta", "label": "Alta" },
+                { "value": "normal", "label": "Normal" },
+                { "value": "baja", "label": "Baja" }
               ]
             },
             {
@@ -802,26 +611,11 @@
               "label": "Estado",
               "format": "text",
               "values": [
-                {
-                  "value": "abierta",
-                  "label": "Abierta"
-                },
-                {
-                  "value": "asignada",
-                  "label": "Asignada"
-                },
-                {
-                  "value": "en_curso",
-                  "label": "En curso"
-                },
-                {
-                  "value": "terminada",
-                  "label": "Terminada"
-                },
-                {
-                  "value": "cancelada",
-                  "label": "Cancelada"
-                }
+                { "value": "abierta", "label": "Abierta" },
+                { "value": "asignada", "label": "Asignada" },
+                { "value": "en_curso", "label": "En curso" },
+                { "value": "terminada", "label": "Terminada" },
+                { "value": "cancelada", "label": "Cancelada" }
               ]
             },
             {
@@ -836,14 +630,8 @@
               "label": "Egreso",
               "format": "text",
               "values": [
-                {
-                  "value": "a_pagar",
-                  "label": "A pagar"
-                },
-                {
-                  "value": "pagado",
-                  "label": "Pagado"
-                }
+                { "value": "a_pagar", "label": "A pagar" },
+                { "value": "pagado", "label": "Pagado" }
               ]
             },
             {
@@ -852,14 +640,8 @@
               "label": "Al inquilino",
               "format": "text",
               "values": [
-                {
-                  "value": "a_cobrar",
-                  "label": "Falta cargarlo"
-                },
-                {
-                  "value": "cobrado",
-                  "label": "En su recibo"
-                }
+                { "value": "a_cobrar", "label": "Falta cargarlo" },
+                { "value": "cobrado", "label": "En su recibo" }
               ]
             }
           ],
@@ -946,7 +728,48 @@
     ],
     "actionContracts": "./dist/agentic/contracts.js",
     "copilotCatalogFingerprint": "040527319327fac4bfa281197737b9eb",
-    "copilotCatalogContentFingerprint": "a4a451050c7aab497c0b8584502f1bed"
+    "copilotCatalogContentFingerprint": "a4a451050c7aab497c0b8584502f1bed",
+    "permissions": [
+      {
+        "id": "maintenance.workOrders.manage",
+        "label": "Gestionar órdenes de trabajo",
+        "effect": "write",
+        "grants": {
+          "actions": [
+            "maintenance.workOrders.create",
+            "maintenance.workOrders.restore",
+            "maintenance.workOrders.update"
+          ],
+          "views": ["maintenance.orden-de-trabajo.open"]
+        },
+        "requires": [
+          "contacts.read",
+          "maintenance.workOrders.read",
+          "properties.buildings.read",
+          "properties.units.read"
+        ]
+      },
+      {
+        "id": "maintenance.workOrders.delete",
+        "label": "Eliminar órdenes de trabajo",
+        "effect": "destructive",
+        "grants": { "actions": ["maintenance.workOrders.delete"] },
+        "requires": ["maintenance.workOrders.read"]
+      },
+      {
+        "id": "maintenance.workOrders.read",
+        "label": "Ver órdenes de trabajo",
+        "effect": "read",
+        "grants": {
+          "actions": [
+            "maintenance.workOrders.getById",
+            "maintenance.workOrders.list",
+            "maintenance.workOrders.overview"
+          ],
+          "views": ["maintenance.mantenimiento.open"]
+        }
+      }
+    ]
   },
   "initView": null
 }
